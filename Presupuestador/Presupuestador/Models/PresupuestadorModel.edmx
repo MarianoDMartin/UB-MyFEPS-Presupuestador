@@ -1,0 +1,606 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Clientes">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="apellido" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="documento" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="genero" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Presupuestos">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="descripcion" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="proyecto_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Presupuestos_Tareas">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="presupuesto_id" Type="int" Nullable="false" />
+          <Property Name="tarea_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PresupuestosTareas_Recursos">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="horas" Type="int" />
+          <Property Name="presupuesto_tarea_id" Type="int" Nullable="false" />
+          <Property Name="recurso_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Proyectos">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="descripcion" Type="varchar" MaxLength="250" />
+          <Property Name="cliente_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Rangos">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="descripcion" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Recursos">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="descripcion" Type="varchar" MaxLength="50" />
+          <Property Name="valorHora" Type="int" Nullable="false" />
+          <Property Name="rango_id" Type="int" Nullable="false" />
+          <Property Name="rol_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Roles">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="descripcion" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Tareas">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="titulo" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="descripcion" Type="varchar" MaxLength="500" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Presupuestos_Proyectos">
+          <End Role="Proyectos" Type="Self.Proyectos" Multiplicity="1" />
+          <End Role="Presupuestos" Type="Self.Presupuestos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Proyectos">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Presupuestos">
+              <PropertyRef Name="proyecto_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Presupuestos_Tareas_Presupuestos">
+          <End Role="Presupuestos" Type="Self.Presupuestos" Multiplicity="1" />
+          <End Role="Presupuestos_Tareas" Type="Self.Presupuestos_Tareas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Presupuestos">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Presupuestos_Tareas">
+              <PropertyRef Name="presupuesto_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Presupuestos_Tareas_Tareas">
+          <End Role="Tareas" Type="Self.Tareas" Multiplicity="1" />
+          <End Role="Presupuestos_Tareas" Type="Self.Presupuestos_Tareas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tareas">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Presupuestos_Tareas">
+              <PropertyRef Name="tarea_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PresupuestosTareas_Recursos_PresupuestosTareas">
+          <End Role="Presupuestos_Tareas" Type="Self.Presupuestos_Tareas" Multiplicity="1" />
+          <End Role="PresupuestosTareas_Recursos" Type="Self.PresupuestosTareas_Recursos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Presupuestos_Tareas">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="PresupuestosTareas_Recursos">
+              <PropertyRef Name="presupuesto_tarea_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PresupuestosTareas_Recursos_Recursos">
+          <End Role="Recursos" Type="Self.Recursos" Multiplicity="1" />
+          <End Role="PresupuestosTareas_Recursos" Type="Self.PresupuestosTareas_Recursos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Recursos">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="PresupuestosTareas_Recursos">
+              <PropertyRef Name="recurso_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Proyectos_Clientes">
+          <End Role="Clientes" Type="Self.Clientes" Multiplicity="1" />
+          <End Role="Proyectos" Type="Self.Proyectos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clientes">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Proyectos">
+              <PropertyRef Name="cliente_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Recursos_Rangos">
+          <End Role="Rangos" Type="Self.Rangos" Multiplicity="1" />
+          <End Role="Recursos" Type="Self.Recursos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rangos">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Recursos">
+              <PropertyRef Name="rango_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Recursos_Roles">
+          <End Role="Roles" Type="Self.Roles" Multiplicity="1" />
+          <End Role="Recursos" Type="Self.Recursos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Recursos">
+              <PropertyRef Name="rol_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ModelStoreContainer">
+          <EntitySet Name="Clientes" EntityType="Self.Clientes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Presupuestos" EntityType="Self.Presupuestos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Presupuestos_Tareas" EntityType="Self.Presupuestos_Tareas" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PresupuestosTareas_Recursos" EntityType="Self.PresupuestosTareas_Recursos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Proyectos" EntityType="Self.Proyectos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Rangos" EntityType="Self.Rangos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Recursos" EntityType="Self.Recursos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tareas" EntityType="Self.Tareas" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Presupuestos_Proyectos" Association="Self.FK_Presupuestos_Proyectos">
+            <End Role="Proyectos" EntitySet="Proyectos" />
+            <End Role="Presupuestos" EntitySet="Presupuestos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Presupuestos_Tareas_Presupuestos" Association="Self.FK_Presupuestos_Tareas_Presupuestos">
+            <End Role="Presupuestos" EntitySet="Presupuestos" />
+            <End Role="Presupuestos_Tareas" EntitySet="Presupuestos_Tareas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Presupuestos_Tareas_Tareas" Association="Self.FK_Presupuestos_Tareas_Tareas">
+            <End Role="Tareas" EntitySet="Tareas" />
+            <End Role="Presupuestos_Tareas" EntitySet="Presupuestos_Tareas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PresupuestosTareas_Recursos_PresupuestosTareas" Association="Self.FK_PresupuestosTareas_Recursos_PresupuestosTareas">
+            <End Role="Presupuestos_Tareas" EntitySet="Presupuestos_Tareas" />
+            <End Role="PresupuestosTareas_Recursos" EntitySet="PresupuestosTareas_Recursos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PresupuestosTareas_Recursos_Recursos" Association="Self.FK_PresupuestosTareas_Recursos_Recursos">
+            <End Role="Recursos" EntitySet="Recursos" />
+            <End Role="PresupuestosTareas_Recursos" EntitySet="PresupuestosTareas_Recursos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Proyectos_Clientes" Association="Self.FK_Proyectos_Clientes">
+            <End Role="Clientes" EntitySet="Clientes" />
+            <End Role="Proyectos" EntitySet="Proyectos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Recursos_Rangos" Association="Self.FK_Recursos_Rangos">
+            <End Role="Rangos" EntitySet="Rangos" />
+            <End Role="Recursos" EntitySet="Recursos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Recursos_Roles" Association="Self.FK_Recursos_Roles">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="Recursos" EntitySet="Recursos" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Cliente">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="apellido" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="documento" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="genero" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Proyectos" Relationship="Self.FK_Proyectos_Clientes" FromRole="Clientes" ToRole="Proyectos" />
+        </EntityType>
+        <EntityType Name="Presupuesto">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="descripcion" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="proyecto_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Proyecto" Relationship="Self.FK_Presupuestos_Proyectos" FromRole="Presupuestos" ToRole="Proyectos" />
+          <NavigationProperty Name="Presupuestos_Tareas" Relationship="Self.FK_Presupuestos_Tareas_Presupuestos" FromRole="Presupuestos" ToRole="Presupuestos_Tareas" />
+        </EntityType>
+        <EntityType Name="Presupuestos_Tareas">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="presupuesto_id" Type="Int32" Nullable="false" />
+          <Property Name="tarea_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Presupuesto" Relationship="Self.FK_Presupuestos_Tareas_Presupuestos" FromRole="Presupuestos_Tareas" ToRole="Presupuestos" />
+          <NavigationProperty Name="Tarea" Relationship="Self.FK_Presupuestos_Tareas_Tareas" FromRole="Presupuestos_Tareas" ToRole="Tareas" />
+          <NavigationProperty Name="PresupuestosTareas_Recursos" Relationship="Self.FK_PresupuestosTareas_Recursos_PresupuestosTareas" FromRole="Presupuestos_Tareas" ToRole="PresupuestosTareas_Recursos" />
+        </EntityType>
+        <EntityType Name="PresupuestosTareas_Recursos">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="horas" Type="Int32" />
+          <Property Name="presupuesto_tarea_id" Type="Int32" Nullable="false" />
+          <Property Name="recurso_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Presupuestos_Tareas" Relationship="Self.FK_PresupuestosTareas_Recursos_PresupuestosTareas" FromRole="PresupuestosTareas_Recursos" ToRole="Presupuestos_Tareas" />
+          <NavigationProperty Name="Recurso" Relationship="Self.FK_PresupuestosTareas_Recursos_Recursos" FromRole="PresupuestosTareas_Recursos" ToRole="Recursos" />
+        </EntityType>
+        <EntityType Name="Proyecto">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="descripcion" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="cliente_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Cliente" Relationship="Self.FK_Proyectos_Clientes" FromRole="Proyectos" ToRole="Clientes" />
+          <NavigationProperty Name="Presupuestos" Relationship="Self.FK_Presupuestos_Proyectos" FromRole="Proyectos" ToRole="Presupuestos" />
+        </EntityType>
+        <EntityType Name="Rango">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Recursos" Relationship="Self.FK_Recursos_Rangos" FromRole="Rangos" ToRole="Recursos" />
+        </EntityType>
+        <EntityType Name="Recurso">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="valorHora" Type="Int32" Nullable="false" />
+          <Property Name="rango_id" Type="Int32" Nullable="false" />
+          <Property Name="rol_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="PresupuestosTareas_Recursos" Relationship="Self.FK_PresupuestosTareas_Recursos_Recursos" FromRole="Recursos" ToRole="PresupuestosTareas_Recursos" />
+          <NavigationProperty Name="Rango" Relationship="Self.FK_Recursos_Rangos" FromRole="Recursos" ToRole="Rangos" />
+          <NavigationProperty Name="Role" Relationship="Self.FK_Recursos_Roles" FromRole="Recursos" ToRole="Roles" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Recursos" Relationship="Self.FK_Recursos_Roles" FromRole="Roles" ToRole="Recursos" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Tarea">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="titulo" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="descripcion" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Presupuestos_Tareas" Relationship="Self.FK_Presupuestos_Tareas_Tareas" FromRole="Tareas" ToRole="Presupuestos_Tareas" />
+        </EntityType>
+        <Association Name="FK_Proyectos_Clientes">
+          <End Role="Clientes" Type="Self.Cliente" Multiplicity="1" />
+          <End Role="Proyectos" Type="Self.Proyecto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clientes">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Proyectos">
+              <PropertyRef Name="cliente_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Presupuestos_Proyectos">
+          <End Role="Proyectos" Type="Self.Proyecto" Multiplicity="1" />
+          <End Role="Presupuestos" Type="Self.Presupuesto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Proyectos">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Presupuestos">
+              <PropertyRef Name="proyecto_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Presupuestos_Tareas_Presupuestos">
+          <End Role="Presupuestos" Type="Self.Presupuesto" Multiplicity="1" />
+          <End Role="Presupuestos_Tareas" Type="Self.Presupuestos_Tareas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Presupuestos">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Presupuestos_Tareas">
+              <PropertyRef Name="presupuesto_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Presupuestos_Tareas_Tareas">
+          <End Role="Tareas" Type="Self.Tarea" Multiplicity="1" />
+          <End Role="Presupuestos_Tareas" Type="Self.Presupuestos_Tareas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tareas">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Presupuestos_Tareas">
+              <PropertyRef Name="tarea_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PresupuestosTareas_Recursos_PresupuestosTareas">
+          <End Role="Presupuestos_Tareas" Type="Self.Presupuestos_Tareas" Multiplicity="1" />
+          <End Role="PresupuestosTareas_Recursos" Type="Self.PresupuestosTareas_Recursos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Presupuestos_Tareas">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="PresupuestosTareas_Recursos">
+              <PropertyRef Name="presupuesto_tarea_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PresupuestosTareas_Recursos_Recursos">
+          <End Role="Recursos" Type="Self.Recurso" Multiplicity="1" />
+          <End Role="PresupuestosTareas_Recursos" Type="Self.PresupuestosTareas_Recursos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Recursos">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="PresupuestosTareas_Recursos">
+              <PropertyRef Name="recurso_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Recursos_Rangos">
+          <End Role="Rangos" Type="Self.Rango" Multiplicity="1" />
+          <End Role="Recursos" Type="Self.Recurso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rangos">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Recursos">
+              <PropertyRef Name="rango_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Recursos_Roles">
+          <End Role="Roles" Type="Self.Role" Multiplicity="1" />
+          <End Role="Recursos" Type="Self.Recurso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Recursos">
+              <PropertyRef Name="rol_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Clientes" EntityType="Self.Cliente" />
+          <EntitySet Name="Presupuestos" EntityType="Self.Presupuesto" />
+          <EntitySet Name="Presupuestos_Tareas" EntityType="Self.Presupuestos_Tareas" />
+          <EntitySet Name="PresupuestosTareas_Recursos" EntityType="Self.PresupuestosTareas_Recursos" />
+          <EntitySet Name="Proyectos" EntityType="Self.Proyecto" />
+          <EntitySet Name="Rangos" EntityType="Self.Rango" />
+          <EntitySet Name="Recursos" EntityType="Self.Recurso" />
+          <EntitySet Name="Roles" EntityType="Self.Role" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="Tareas" EntityType="Self.Tarea" />
+          <AssociationSet Name="FK_Proyectos_Clientes" Association="Self.FK_Proyectos_Clientes">
+            <End Role="Clientes" EntitySet="Clientes" />
+            <End Role="Proyectos" EntitySet="Proyectos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Presupuestos_Proyectos" Association="Self.FK_Presupuestos_Proyectos">
+            <End Role="Proyectos" EntitySet="Proyectos" />
+            <End Role="Presupuestos" EntitySet="Presupuestos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Presupuestos_Tareas_Presupuestos" Association="Self.FK_Presupuestos_Tareas_Presupuestos">
+            <End Role="Presupuestos" EntitySet="Presupuestos" />
+            <End Role="Presupuestos_Tareas" EntitySet="Presupuestos_Tareas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Presupuestos_Tareas_Tareas" Association="Self.FK_Presupuestos_Tareas_Tareas">
+            <End Role="Tareas" EntitySet="Tareas" />
+            <End Role="Presupuestos_Tareas" EntitySet="Presupuestos_Tareas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PresupuestosTareas_Recursos_PresupuestosTareas" Association="Self.FK_PresupuestosTareas_Recursos_PresupuestosTareas">
+            <End Role="Presupuestos_Tareas" EntitySet="Presupuestos_Tareas" />
+            <End Role="PresupuestosTareas_Recursos" EntitySet="PresupuestosTareas_Recursos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PresupuestosTareas_Recursos_Recursos" Association="Self.FK_PresupuestosTareas_Recursos_Recursos">
+            <End Role="Recursos" EntitySet="Recursos" />
+            <End Role="PresupuestosTareas_Recursos" EntitySet="PresupuestosTareas_Recursos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Recursos_Rangos" Association="Self.FK_Recursos_Rangos">
+            <End Role="Rangos" EntitySet="Rangos" />
+            <End Role="Recursos" EntitySet="Recursos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Recursos_Roles" Association="Self.FK_Recursos_Roles">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="Recursos" EntitySet="Recursos" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="Clientes">
+            <EntityTypeMapping TypeName="Model.Cliente">
+              <MappingFragment StoreEntitySet="Clientes">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="apellido" ColumnName="apellido" />
+                <ScalarProperty Name="documento" ColumnName="documento" />
+                <ScalarProperty Name="genero" ColumnName="genero" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Presupuestos">
+            <EntityTypeMapping TypeName="Model.Presupuesto">
+              <MappingFragment StoreEntitySet="Presupuestos">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="proyecto_id" ColumnName="proyecto_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Presupuestos_Tareas">
+            <EntityTypeMapping TypeName="Model.Presupuestos_Tareas">
+              <MappingFragment StoreEntitySet="Presupuestos_Tareas">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="presupuesto_id" ColumnName="presupuesto_id" />
+                <ScalarProperty Name="tarea_id" ColumnName="tarea_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PresupuestosTareas_Recursos">
+            <EntityTypeMapping TypeName="Model.PresupuestosTareas_Recursos">
+              <MappingFragment StoreEntitySet="PresupuestosTareas_Recursos">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="horas" ColumnName="horas" />
+                <ScalarProperty Name="presupuesto_tarea_id" ColumnName="presupuesto_tarea_id" />
+                <ScalarProperty Name="recurso_id" ColumnName="recurso_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Proyectos">
+            <EntityTypeMapping TypeName="Model.Proyecto">
+              <MappingFragment StoreEntitySet="Proyectos">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="cliente_id" ColumnName="cliente_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Rangos">
+            <EntityTypeMapping TypeName="Model.Rango">
+              <MappingFragment StoreEntitySet="Rangos">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Recursos">
+            <EntityTypeMapping TypeName="Model.Recurso">
+              <MappingFragment StoreEntitySet="Recursos">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="valorHora" ColumnName="valorHora" />
+                <ScalarProperty Name="rango_id" ColumnName="rango_id" />
+                <ScalarProperty Name="rol_id" ColumnName="rol_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Roles">
+            <EntityTypeMapping TypeName="Model.Role">
+              <MappingFragment StoreEntitySet="Roles">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="Model.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tareas">
+            <EntityTypeMapping TypeName="Model.Tarea">
+              <MappingFragment StoreEntitySet="Tareas">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="titulo" ColumnName="titulo" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
