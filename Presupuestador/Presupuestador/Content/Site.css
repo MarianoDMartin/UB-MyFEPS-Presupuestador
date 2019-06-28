@@ -22,3 +22,25 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.navbar {
+    background-color: #AC2925;
+}
+
+.navbar-inverse .navbar-nav > li > a {
+    color: #FFFFFF;
+}
+
+.navbar-inverse .navbar-brand {
+    color: #FFFFFF;
+}
+
+.navbar-header img {
+    height: 40px;
+    margin-top: 5px;
+    float: left;
+}
+
+.navbar-header a {
+    margin-left: 5px !important;
+}
