@@ -1,24 +1,24 @@
 ﻿@model IEnumerable<Presupuestador.Models.Proyecto>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Presupuestos";
 }
 
-<h2>Index</h2>
+<h2>Presupuestos</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Crear Presupuesto", "Create", routeValues: null, htmlAttributes: new { @class = "btn btn-danger", @role = "button" })
 </p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.nombre)
+            @Html.DisplayName("Nombre")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.descripcion)
+            @Html.DisplayName("Descripción")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Cliente.nombre)
+            @Html.DisplayName("Cliente")
         </th>
         <th></th>
     </tr>
@@ -35,9 +35,9 @@
             @Html.DisplayFor(modelItem => item.Cliente.nombre)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.id })
+            <span class="glyphicon glyphicon-pencil" data-tooltip="tooltip" data-placement="bottom" title="Editar" onclick="location.href='@Url.Action("Edit", new {id= item.id})'"></span>
+            <span class="glyphicon glyphicon-eye-open" data-tooltip="tooltip" data-placement="bottom" title="Detalle" onclick="location.href='@Url.Action("Details", new {id= item.id})'"></span>
+            <span class="glyphicon glyphicon-trash" data-tooltip="tooltip" data-placement="bottom" title="Eliminar" onclick="location.href='@Url.Action("Delete", new {id= item.id})'"></span>
         </td>
     </tr>
 }

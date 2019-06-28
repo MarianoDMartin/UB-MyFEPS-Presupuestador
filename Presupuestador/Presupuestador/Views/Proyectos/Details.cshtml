@@ -1,13 +1,12 @@
 ﻿@model Presupuestador.Models.Proyecto
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Detalle Presupuesto";
 }
 
-<h2>Details</h2>
+<h2>Detalles Presupuesto</h2>
 
 <div>
-    <h4>Proyecto</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -37,6 +36,6 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Editar", "Edit", new { id = Model.id }, htmlAttributes: new { @class = "btn btn-danger", @role = "button" })
+    @Html.ActionLink("Cancelar", "Index", routeValues: null, htmlAttributes: new { @class = "btn btn-default", @role = "button" })
 </p>
