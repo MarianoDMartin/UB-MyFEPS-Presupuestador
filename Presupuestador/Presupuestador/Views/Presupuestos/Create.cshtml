@@ -12,79 +12,92 @@
     @Html.AntiForgeryToken()
 
     <hr />
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="info-tab" data-toggle="tab" href="#info" role="tab" aria-controls="info" aria-selected="true">Info</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="tareas-tab" data-toggle="tab" href="#tareas" role="tab" aria-controls="tareas" aria-selected="false">Tareas</a>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="info" role="tabpanel" aria-labelledby="info-tab">
+            <div class="form-row">
+                <div class="form-group col-sm-6">
+                    @Html.LabelFor(model => model.descripcion, "Descripción", new { @class = "control-label" })
+                    @Html.EditorFor(model => model.descripcion, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.descripcion, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group col-sm-2">
+                    @Html.LabelFor(model => model.ciclos_test, "Ciclos por test", new { @class = "control-label" })
+                    @Html.EditorFor(model => model.ciclos_test, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ciclos_test, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group col-sm-2">
+                    @Html.LabelFor(model => model.tiempo_test, "Tiempo por test", new { @class = "control-label" })
+                    @Html.EditorFor(model => model.tiempo_test, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.tiempo_test, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group col-sm-2">
+                    @Html.LabelFor(model => model.fecha_vencimiento, "Fecha Vencimiento", new { @class = "control-label" })
+                    @Html.EditorFor(model => model.fecha_vencimiento, new { htmlAttributes = new { @class = "form-control datepicker" } })
+                    @Html.ValidationMessageFor(model => model.fecha_vencimiento, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-sm-2">
+                    @Html.LabelFor(model => model.cargas_sociales, "Cargas sociales (%)", new { @class = "control-label" })
+                    @Html.EditorFor(model => model.cargas_sociales, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.cargas_sociales, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group col-sm-2">
+                    @Html.LabelFor(model => model.markup, "Markup (%)", new { @class = "control-label" })
+                    @Html.EditorFor(model => model.markup, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.markup, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group col-sm-4">
+                    @Html.LabelFor(model => model.creador, "Creador", new { @class = "control-label" })
+                    @Html.EditorFor(model => model.creador, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.creador, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group col-sm-4">
+                    @Html.LabelFor(model => model.proyecto_id, "Proyectos", new { @class = "control-label" })
+                    @Html.DropDownList("proyecto_id", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.proyecto_id, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="tareas" role="tabpanel" aria-labelledby="tareas-tab">
+            <div class="form-row">
+                <div class="form-group col-sm-6">
+                    @Html.LabelFor(model => model.proyecto_id, "Tareas", new { @class = "control-label" })
+                    @Html.DropDownList("proyecto_id", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.proyecto_id, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group col-sm-4">
+                    @Html.LabelFor(model => model.proyecto_id, "Recursos", new { @class = "control-label" })
+                    @Html.DropDownList("proyecto_id", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.proyecto_id, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group col-sm-2">
+                    <input type="button" value="Agregar" class="btn btn-default" style="margin-top:25px;" />
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-sm-12">
+                    <input type="submit" value="Crear" class="btn btn-danger" />
+                    @Html.ActionLink("Cancelar", "Index", routeValues: null, htmlAttributes: new { @class = "btn btn-default", @role = "button" })
+                </div>
+            </div>
+        </div>
+    </div>
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    <div class="form-row">
-        <div class="form-group col-sm-6">
-            @Html.LabelFor(model => model.descripcion, "Descripción", new { @class = "control-label" })
-            @Html.EditorFor(model => model.descripcion, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.descripcion, "", new { @class = "text-danger" })
-        </div>
-        <div class="form-group col-sm-2">
-            @Html.LabelFor(model => model.ciclos_test, "Ciclos por test", new { @class = "control-label" })
-            @Html.EditorFor(model => model.ciclos_test, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.ciclos_test, "", new { @class = "text-danger" })
-        </div>
-        <div class="form-group col-sm-2">
-            @Html.LabelFor(model => model.tiempo_test, "Tiempo por test", new { @class = "control-label" })
-            @Html.EditorFor(model => model.tiempo_test, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.tiempo_test, "", new { @class = "text-danger" })
-        </div>
-        <div class="form-group col-sm-2">
-            @Html.LabelFor(model => model.fecha_vencimiento, "Fecha Vencimiento", new { @class = "control-label" })
-            @Html.EditorFor(model => model.fecha_vencimiento, new { htmlAttributes = new { @class = "form-control datepicker" } })
-            @Html.ValidationMessageFor(model => model.fecha_vencimiento, "", new { @class = "text-danger" })
-        </div>
-    </div>
-    <div class="form-row">
-        <div class="form-group col-sm-2">
-            @Html.LabelFor(model => model.cargas_sociales, "Cargas sociales (%)", new { @class = "control-label" })
-            @Html.EditorFor(model => model.cargas_sociales, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.cargas_sociales, "", new { @class = "text-danger" })
-        </div>
-
-        <div class="form-group col-sm-2">
-            @Html.LabelFor(model => model.markup, "Markup (%)", new { @class = "control-label" })
-            @Html.EditorFor(model => model.markup, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.markup, "", new { @class = "text-danger" })
-        </div>
-
-        <div class="form-group col-sm-4">
-            @Html.LabelFor(model => model.creador, "Creador", new { @class = "control-label" })
-            @Html.EditorFor(model => model.creador, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.creador, "", new { @class = "text-danger" })
-        </div>
-
-        <div class="form-group col-sm-4">
-            @Html.LabelFor(model => model.proyecto_id, "Proyectos", new { @class = "control-label" })
-            @Html.DropDownList("proyecto_id", null, htmlAttributes: new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.proyecto_id, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-row">
-        <div class="form-group col-sm-6">
-            @Html.LabelFor(model => model.proyecto_id, "Tareas", new { @class = "control-label" })
-            @Html.DropDownList("proyecto_id", null, htmlAttributes: new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.proyecto_id, "", new { @class = "text-danger" })
-        </div>
-
-        <div class="form-group col-sm-4">
-            @Html.LabelFor(model => model.proyecto_id, "Recursos", new { @class = "control-label" })
-            @Html.DropDownList("proyecto_id", null, htmlAttributes: new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.proyecto_id, "", new { @class = "text-danger" })
-        </div>
-
-        <div class="form-group col-sm-2">
-            <input type="button" value="Agregar" class="btn btn-default" style="margin-top:25px;" />
-        </div>
-    </div>
-
-    <div class="form-row">
-        <div class="form-group col-sm-12">
-            <input type="submit" value="Crear" class="btn btn-danger" />
-            @Html.ActionLink("Cancelar", "Index", routeValues: null, htmlAttributes: new { @class = "btn btn-default", @role = "button" })
-        </div>
-    </div>
 }
 
 @section Scripts {
