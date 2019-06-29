@@ -5,15 +5,38 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
       <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="Clientes">
+        <EntityType Name="Categorias">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="descripcion" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="categoria_padre" Type="int" />
+        </EntityType>
+        <EntityType Name="Contactos">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" Nullable="false" />
           <Property Name="nombre" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="apellido" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="documento" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="genero" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="mail" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="telefono" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="cargo" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Plantillas">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="250" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Plantillas_Tareas">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="plantilla_id" Type="int" Nullable="false" />
+          <Property Name="tarea_id" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Presupuestos">
           <Key>
@@ -21,7 +44,23 @@
           </Key>
           <Property Name="id" Type="int" Nullable="false" />
           <Property Name="descripcion" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="ciclos_test" Type="int" Nullable="false" />
+          <Property Name="tiempo_test" Type="int" Nullable="false" />
+          <Property Name="fecha_creacion" Type="date" Nullable="false" />
+          <Property Name="fecha_vencimiento" Type="date" Nullable="false" />
+          <Property Name="cargas_sociales" Type="float" />
+          <Property Name="markup" Type="float" />
+          <Property Name="costo_base" Type="float" />
+          <Property Name="creador" Type="varchar" MaxLength="50" />
           <Property Name="proyecto_id" Type="int" Nullable="false" />
+          <Property Name="estado_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Presupuestos_Estados">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="descripcion" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="Presupuestos_Tareas">
           <Key>
@@ -47,7 +86,7 @@
           <Property Name="id" Type="int" Nullable="false" />
           <Property Name="nombre" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="descripcion" Type="varchar" MaxLength="250" />
-          <Property Name="cliente_id" Type="int" Nullable="false" />
+          <Property Name="contacto_id" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Rangos">
           <Key>
@@ -73,16 +112,6 @@
           <Property Name="id" Type="int" Nullable="false" />
           <Property Name="descripcion" Type="varchar" MaxLength="50" />
         </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="principal_id" Type="int" Nullable="false" />
-          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="version" Type="int" />
-          <Property Name="definition" Type="varbinary(max)" />
-        </EntityType>
         <EntityType Name="Tareas">
           <Key>
             <PropertyRef Name="id" />
@@ -90,7 +119,64 @@
           <Property Name="id" Type="int" Nullable="false" />
           <Property Name="titulo" Type="varchar" MaxLength="250" Nullable="false" />
           <Property Name="descripcion" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="tipo_tarea_id" Type="int" Nullable="false" />
+          <Property Name="categoria_id" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="Tipos_Tareas">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="descripcion" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Categorias_Categorias">
+          <End Role="Categorias" Type="Self.Categorias" Multiplicity="0..1" />
+          <End Role="SubCategorias" Type="Self.Categorias" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categorias">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="SubCategorias">
+              <PropertyRef Name="categoria_padre" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Plantillas_Tareas_Plantillas">
+          <End Role="Plantillas" Type="Self.Plantillas" Multiplicity="1" />
+          <End Role="Plantillas_Tareas" Type="Self.Plantillas_Tareas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Plantillas">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Plantillas_Tareas">
+              <PropertyRef Name="plantilla_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Plantillas_Tareas_Tareas">
+          <End Role="Tareas" Type="Self.Tareas" Multiplicity="1" />
+          <End Role="Plantillas_Tareas" Type="Self.Plantillas_Tareas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tareas">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Plantillas_Tareas">
+              <PropertyRef Name="tarea_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Presupuestos_Estados">
+          <End Role="Presupuestos_Estados" Type="Self.Presupuestos_Estados" Multiplicity="1" />
+          <End Role="Presupuestos" Type="Self.Presupuestos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Presupuestos_Estados">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Presupuestos">
+              <PropertyRef Name="estado_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Presupuestos_Proyectos">
           <End Role="Proyectos" Type="Self.Proyectos" Multiplicity="1" />
           <End Role="Presupuestos" Type="Self.Presupuestos" Multiplicity="*" />
@@ -151,15 +237,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Proyectos_Clientes">
-          <End Role="Clientes" Type="Self.Clientes" Multiplicity="1" />
+        <Association Name="FK_Proyectos_Contactos">
+          <End Role="Contactos" Type="Self.Contactos" Multiplicity="1" />
           <End Role="Proyectos" Type="Self.Proyectos" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Clientes">
+            <Principal Role="Contactos">
               <PropertyRef Name="id" />
             </Principal>
             <Dependent Role="Proyectos">
-              <PropertyRef Name="cliente_id" />
+              <PropertyRef Name="contacto_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -187,17 +273,61 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Tareas_Categorias">
+          <End Role="Categorias" Type="Self.Categorias" Multiplicity="1" />
+          <End Role="Tareas" Type="Self.Tareas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categorias">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Tareas">
+              <PropertyRef Name="categoria_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tareas_Tipos_Tareas">
+          <End Role="Tipos_Tareas" Type="Self.Tipos_Tareas" Multiplicity="1" />
+          <End Role="Tareas" Type="Self.Tareas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tipos_Tareas">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Tareas">
+              <PropertyRef Name="tipo_tarea_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="ModelStoreContainer">
-          <EntitySet Name="Clientes" EntityType="Self.Clientes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Categorias" EntityType="Self.Categorias" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Contactos" EntityType="Self.Contactos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Plantillas" EntityType="Self.Plantillas" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Plantillas_Tareas" EntityType="Self.Plantillas_Tareas" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Presupuestos" EntityType="Self.Presupuestos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Presupuestos_Estados" EntityType="Self.Presupuestos_Estados" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Presupuestos_Tareas" EntityType="Self.Presupuestos_Tareas" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PresupuestosTareas_Recursos" EntityType="Self.PresupuestosTareas_Recursos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Proyectos" EntityType="Self.Proyectos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Rangos" EntityType="Self.Rangos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Recursos" EntityType="Self.Recursos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tareas" EntityType="Self.Tareas" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tipos_Tareas" EntityType="Self.Tipos_Tareas" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Categorias_Categorias" Association="Self.FK_Categorias_Categorias">
+            <End Role="Categorias" EntitySet="Categorias" />
+            <End Role="SubCategorias" EntitySet="Categorias" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Plantillas_Tareas_Plantillas" Association="Self.FK_Plantillas_Tareas_Plantillas">
+            <End Role="Plantillas" EntitySet="Plantillas" />
+            <End Role="Plantillas_Tareas" EntitySet="Plantillas_Tareas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Plantillas_Tareas_Tareas" Association="Self.FK_Plantillas_Tareas_Tareas">
+            <End Role="Tareas" EntitySet="Tareas" />
+            <End Role="Plantillas_Tareas" EntitySet="Plantillas_Tareas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Presupuestos_Estados" Association="Self.FK_Presupuestos_Estados">
+            <End Role="Presupuestos_Estados" EntitySet="Presupuestos_Estados" />
+            <End Role="Presupuestos" EntitySet="Presupuestos" />
+          </AssociationSet>
           <AssociationSet Name="FK_Presupuestos_Proyectos" Association="Self.FK_Presupuestos_Proyectos">
             <End Role="Proyectos" EntitySet="Proyectos" />
             <End Role="Presupuestos" EntitySet="Presupuestos" />
@@ -218,8 +348,8 @@
             <End Role="Recursos" EntitySet="Recursos" />
             <End Role="PresupuestosTareas_Recursos" EntitySet="PresupuestosTareas_Recursos" />
           </AssociationSet>
-          <AssociationSet Name="FK_Proyectos_Clientes" Association="Self.FK_Proyectos_Clientes">
-            <End Role="Clientes" EntitySet="Clientes" />
+          <AssociationSet Name="FK_Proyectos_Contactos" Association="Self.FK_Proyectos_Contactos">
+            <End Role="Contactos" EntitySet="Contactos" />
             <End Role="Proyectos" EntitySet="Proyectos" />
           </AssociationSet>
           <AssociationSet Name="FK_Recursos_Rangos" Association="Self.FK_Recursos_Rangos">
@@ -230,22 +360,59 @@
             <End Role="Roles" EntitySet="Roles" />
             <End Role="Recursos" EntitySet="Recursos" />
           </AssociationSet>
+          <AssociationSet Name="FK_Tareas_Categorias" Association="Self.FK_Tareas_Categorias">
+            <End Role="Categorias" EntitySet="Categorias" />
+            <End Role="Tareas" EntitySet="Tareas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tareas_Tipos_Tareas" Association="Self.FK_Tareas_Tipos_Tareas">
+            <End Role="Tipos_Tareas" EntitySet="Tipos_Tareas" />
+            <End Role="Tareas" EntitySet="Tareas" />
+          </AssociationSet>
         </EntityContainer>
       </Schema>
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="Cliente">
+        <EntityType Name="Categoria">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="descripcion" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="categoria_padre" Type="Int32" />
+          <NavigationProperty Name="SubCategorias" Relationship="Self.FK_Categorias_Categorias" FromRole="Categorias" ToRole="SubCategorias" />
+          <NavigationProperty Name="Categoria1" Relationship="Self.FK_Categorias_Categorias" FromRole="SubCategorias" ToRole="Categorias" />
+          <NavigationProperty Name="Tareas" Relationship="Self.FK_Tareas_Categorias" FromRole="Categorias" ToRole="Tareas" />
+        </EntityType>
+        <EntityType Name="Contacto">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" />
           <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="apellido" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="documento" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="genero" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Proyectos" Relationship="Self.FK_Proyectos_Clientes" FromRole="Clientes" ToRole="Proyectos" />
+          <Property Name="mail" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="telefono" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="cargo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Proyectos" Relationship="Self.FK_Proyectos_Contactos" FromRole="Contactos" ToRole="Proyectos" />
+        </EntityType>
+        <EntityType Name="Plantilla">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="nombre" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Plantillas_Tareas" Relationship="Self.FK_Plantillas_Tareas_Plantillas" FromRole="Plantillas" ToRole="Plantillas_Tareas" />
+        </EntityType>
+        <EntityType Name="Plantillas_Tareas">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="plantilla_id" Type="Int32" Nullable="false" />
+          <Property Name="tarea_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Plantilla" Relationship="Self.FK_Plantillas_Tareas_Plantillas" FromRole="Plantillas_Tareas" ToRole="Plantillas" />
+          <NavigationProperty Name="Tarea" Relationship="Self.FK_Plantillas_Tareas_Tareas" FromRole="Plantillas_Tareas" ToRole="Tareas" />
         </EntityType>
         <EntityType Name="Presupuesto">
           <Key>
@@ -253,9 +420,27 @@
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" />
           <Property Name="descripcion" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ciclos_test" Type="Int32" Nullable="false" />
+          <Property Name="tiempo_test" Type="Int32" Nullable="false" />
+          <Property Name="fecha_creacion" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="fecha_vencimiento" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="cargas_sociales" Type="Double" />
+          <Property Name="markup" Type="Double" />
+          <Property Name="costo_base" Type="Double" />
+          <Property Name="creador" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="proyecto_id" Type="Int32" Nullable="false" />
+          <Property Name="estado_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Presupuestos_Estados" Relationship="Self.FK_Presupuestos_Estados" FromRole="Presupuestos" ToRole="Presupuestos_Estados" />
           <NavigationProperty Name="Proyecto" Relationship="Self.FK_Presupuestos_Proyectos" FromRole="Presupuestos" ToRole="Proyectos" />
           <NavigationProperty Name="Presupuestos_Tareas" Relationship="Self.FK_Presupuestos_Tareas_Presupuestos" FromRole="Presupuestos" ToRole="Presupuestos_Tareas" />
+        </EntityType>
+        <EntityType Name="Presupuestos_Estados">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Presupuestos" Relationship="Self.FK_Presupuestos_Estados" FromRole="Presupuestos_Estados" ToRole="Presupuestos" />
         </EntityType>
         <EntityType Name="Presupuestos_Tareas">
           <Key>
@@ -286,8 +471,8 @@
           <Property Name="id" Type="Int32" Nullable="false" />
           <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="descripcion" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Name="cliente_id" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Cliente" Relationship="Self.FK_Proyectos_Clientes" FromRole="Proyectos" ToRole="Clientes" />
+          <Property Name="contacto_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Contacto" Relationship="Self.FK_Proyectos_Contactos" FromRole="Proyectos" ToRole="Contactos" />
           <NavigationProperty Name="Presupuestos" Relationship="Self.FK_Presupuestos_Proyectos" FromRole="Proyectos" ToRole="Presupuestos" />
         </EntityType>
         <EntityType Name="Rango">
@@ -319,16 +504,6 @@
           <Property Name="descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Recursos" Relationship="Self.FK_Recursos_Roles" FromRole="Roles" ToRole="Recursos" />
         </EntityType>
-        <EntityType Name="sysdiagram">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="principal_id" Type="Int32" Nullable="false" />
-          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="version" Type="Int32" />
-          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
-        </EntityType>
         <EntityType Name="Tarea">
           <Key>
             <PropertyRef Name="id" />
@@ -336,17 +511,90 @@
           <Property Name="id" Type="Int32" Nullable="false" />
           <Property Name="titulo" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="descripcion" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="tipo_tarea_id" Type="Int32" Nullable="false" />
+          <Property Name="categoria_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Categoria" Relationship="Self.FK_Tareas_Categorias" FromRole="Tareas" ToRole="Categorias" />
+          <NavigationProperty Name="Plantillas_Tareas" Relationship="Self.FK_Plantillas_Tareas_Tareas" FromRole="Tareas" ToRole="Plantillas_Tareas" />
           <NavigationProperty Name="Presupuestos_Tareas" Relationship="Self.FK_Presupuestos_Tareas_Tareas" FromRole="Tareas" ToRole="Presupuestos_Tareas" />
+          <NavigationProperty Name="Tipos_Tareas" Relationship="Self.FK_Tareas_Tipos_Tareas" FromRole="Tareas" ToRole="Tipos_Tareas" />
         </EntityType>
-        <Association Name="FK_Proyectos_Clientes">
-          <End Role="Clientes" Type="Self.Cliente" Multiplicity="1" />
+        <EntityType Name="Tipos_Tareas">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Tareas" Relationship="Self.FK_Tareas_Tipos_Tareas" FromRole="Tipos_Tareas" ToRole="Tareas" />
+        </EntityType>
+        <Association Name="FK_Categorias_Categorias">
+          <End Role="Categorias" Type="Self.Categoria" Multiplicity="0..1" />
+          <End Role="SubCategorias" Type="Self.Categoria" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categorias">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="SubCategorias">
+              <PropertyRef Name="categoria_padre" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tareas_Categorias">
+          <End Role="Categorias" Type="Self.Categoria" Multiplicity="1" />
+          <End Role="Tareas" Type="Self.Tarea" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categorias">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Tareas">
+              <PropertyRef Name="categoria_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Proyectos_Contactos">
+          <End Role="Contactos" Type="Self.Contacto" Multiplicity="1" />
           <End Role="Proyectos" Type="Self.Proyecto" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Clientes">
+            <Principal Role="Contactos">
               <PropertyRef Name="id" />
             </Principal>
             <Dependent Role="Proyectos">
-              <PropertyRef Name="cliente_id" />
+              <PropertyRef Name="contacto_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Plantillas_Tareas_Plantillas">
+          <End Role="Plantillas" Type="Self.Plantilla" Multiplicity="1" />
+          <End Role="Plantillas_Tareas" Type="Self.Plantillas_Tareas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Plantillas">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Plantillas_Tareas">
+              <PropertyRef Name="plantilla_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Plantillas_Tareas_Tareas">
+          <End Role="Tareas" Type="Self.Tarea" Multiplicity="1" />
+          <End Role="Plantillas_Tareas" Type="Self.Plantillas_Tareas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tareas">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Plantillas_Tareas">
+              <PropertyRef Name="tarea_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Presupuestos_Estados">
+          <End Role="Presupuestos_Estados" Type="Self.Presupuestos_Estados" Multiplicity="1" />
+          <End Role="Presupuestos" Type="Self.Presupuesto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Presupuestos_Estados">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Presupuestos">
+              <PropertyRef Name="estado_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -434,20 +682,56 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Clientes" EntityType="Self.Cliente" />
+        <Association Name="FK_Tareas_Tipos_Tareas">
+          <End Role="Tipos_Tareas" Type="Self.Tipos_Tareas" Multiplicity="1" />
+          <End Role="Tareas" Type="Self.Tarea" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tipos_Tareas">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Tareas">
+              <PropertyRef Name="tipo_tarea_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Entities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Categorias" EntityType="Self.Categoria" />
+          <EntitySet Name="Contactos" EntityType="Self.Contacto" />
+          <EntitySet Name="Plantillas" EntityType="Self.Plantilla" />
+          <EntitySet Name="Plantillas_Tareas" EntityType="Self.Plantillas_Tareas" />
           <EntitySet Name="Presupuestos" EntityType="Self.Presupuesto" />
+          <EntitySet Name="Presupuestos_Estados" EntityType="Self.Presupuestos_Estados" />
           <EntitySet Name="Presupuestos_Tareas" EntityType="Self.Presupuestos_Tareas" />
           <EntitySet Name="PresupuestosTareas_Recursos" EntityType="Self.PresupuestosTareas_Recursos" />
           <EntitySet Name="Proyectos" EntityType="Self.Proyecto" />
           <EntitySet Name="Rangos" EntityType="Self.Rango" />
           <EntitySet Name="Recursos" EntityType="Self.Recurso" />
           <EntitySet Name="Roles" EntityType="Self.Role" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
           <EntitySet Name="Tareas" EntityType="Self.Tarea" />
-          <AssociationSet Name="FK_Proyectos_Clientes" Association="Self.FK_Proyectos_Clientes">
-            <End Role="Clientes" EntitySet="Clientes" />
+          <EntitySet Name="Tipos_Tareas" EntityType="Self.Tipos_Tareas" />
+          <AssociationSet Name="FK_Categorias_Categorias" Association="Self.FK_Categorias_Categorias">
+            <End Role="Categorias" EntitySet="Categorias" />
+            <End Role="SubCategorias" EntitySet="Categorias" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tareas_Categorias" Association="Self.FK_Tareas_Categorias">
+            <End Role="Categorias" EntitySet="Categorias" />
+            <End Role="Tareas" EntitySet="Tareas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Proyectos_Contactos" Association="Self.FK_Proyectos_Contactos">
+            <End Role="Contactos" EntitySet="Contactos" />
             <End Role="Proyectos" EntitySet="Proyectos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Plantillas_Tareas_Plantillas" Association="Self.FK_Plantillas_Tareas_Plantillas">
+            <End Role="Plantillas" EntitySet="Plantillas" />
+            <End Role="Plantillas_Tareas" EntitySet="Plantillas_Tareas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Plantillas_Tareas_Tareas" Association="Self.FK_Plantillas_Tareas_Tareas">
+            <End Role="Tareas" EntitySet="Tareas" />
+            <End Role="Plantillas_Tareas" EntitySet="Plantillas_Tareas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Presupuestos_Estados" Association="Self.FK_Presupuestos_Estados">
+            <End Role="Presupuestos_Estados" EntitySet="Presupuestos_Estados" />
+            <End Role="Presupuestos" EntitySet="Presupuestos" />
           </AssociationSet>
           <AssociationSet Name="FK_Presupuestos_Proyectos" Association="Self.FK_Presupuestos_Proyectos">
             <End Role="Proyectos" EntitySet="Proyectos" />
@@ -477,21 +761,51 @@
             <End Role="Roles" EntitySet="Roles" />
             <End Role="Recursos" EntitySet="Recursos" />
           </AssociationSet>
+          <AssociationSet Name="FK_Tareas_Tipos_Tareas" Association="Self.FK_Tareas_Tipos_Tareas">
+            <End Role="Tipos_Tareas" EntitySet="Tipos_Tareas" />
+            <End Role="Tareas" EntitySet="Tareas" />
+          </AssociationSet>
         </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="Entities">
-          <EntitySetMapping Name="Clientes">
-            <EntityTypeMapping TypeName="Model.Cliente">
-              <MappingFragment StoreEntitySet="Clientes">
+        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="Entities1">
+          <EntitySetMapping Name="Categorias">
+            <EntityTypeMapping TypeName="Model.Categoria">
+              <MappingFragment StoreEntitySet="Categorias">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="categoria_padre" ColumnName="categoria_padre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Contactos">
+            <EntityTypeMapping TypeName="Model.Contacto">
+              <MappingFragment StoreEntitySet="Contactos">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="nombre" ColumnName="nombre" />
-                <ScalarProperty Name="apellido" ColumnName="apellido" />
-                <ScalarProperty Name="documento" ColumnName="documento" />
-                <ScalarProperty Name="genero" ColumnName="genero" />
+                <ScalarProperty Name="mail" ColumnName="mail" />
+                <ScalarProperty Name="telefono" ColumnName="telefono" />
+                <ScalarProperty Name="cargo" ColumnName="cargo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Plantillas">
+            <EntityTypeMapping TypeName="Model.Plantilla">
+              <MappingFragment StoreEntitySet="Plantillas">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Plantillas_Tareas">
+            <EntityTypeMapping TypeName="Model.Plantillas_Tareas">
+              <MappingFragment StoreEntitySet="Plantillas_Tareas">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="plantilla_id" ColumnName="plantilla_id" />
+                <ScalarProperty Name="tarea_id" ColumnName="tarea_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -500,7 +814,24 @@
               <MappingFragment StoreEntitySet="Presupuestos">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="ciclos_test" ColumnName="ciclos_test" />
+                <ScalarProperty Name="tiempo_test" ColumnName="tiempo_test" />
+                <ScalarProperty Name="fecha_creacion" ColumnName="fecha_creacion" />
+                <ScalarProperty Name="fecha_vencimiento" ColumnName="fecha_vencimiento" />
+                <ScalarProperty Name="cargas_sociales" ColumnName="cargas_sociales" />
+                <ScalarProperty Name="markup" ColumnName="markup" />
+                <ScalarProperty Name="costo_base" ColumnName="costo_base" />
+                <ScalarProperty Name="creador" ColumnName="creador" />
                 <ScalarProperty Name="proyecto_id" ColumnName="proyecto_id" />
+                <ScalarProperty Name="estado_id" ColumnName="estado_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Presupuestos_Estados">
+            <EntityTypeMapping TypeName="Model.Presupuestos_Estados">
+              <MappingFragment StoreEntitySet="Presupuestos_Estados">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -529,7 +860,7 @@
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="nombre" ColumnName="nombre" />
                 <ScalarProperty Name="descripcion" ColumnName="descripcion" />
-                <ScalarProperty Name="cliente_id" ColumnName="cliente_id" />
+                <ScalarProperty Name="contacto_id" ColumnName="contacto_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -560,22 +891,21 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="Model.sysdiagram">
-              <MappingFragment StoreEntitySet="sysdiagrams">
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="definition" ColumnName="definition" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Tareas">
             <EntityTypeMapping TypeName="Model.Tarea">
               <MappingFragment StoreEntitySet="Tareas">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="titulo" ColumnName="titulo" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="tipo_tarea_id" ColumnName="tipo_tarea_id" />
+                <ScalarProperty Name="categoria_id" ColumnName="categoria_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tipos_Tareas">
+            <EntityTypeMapping TypeName="Model.Tipos_Tareas">
+              <MappingFragment StoreEntitySet="Tipos_Tareas">
+                <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="descripcion" ColumnName="descripcion" />
               </MappingFragment>
             </EntityTypeMapping>

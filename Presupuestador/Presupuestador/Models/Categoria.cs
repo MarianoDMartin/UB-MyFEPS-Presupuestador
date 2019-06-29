@@ -12,30 +12,23 @@ namespace Presupuestador.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Presupuesto
+    public partial class Categoria
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Presupuesto()
+        public Categoria()
         {
-            this.Presupuestos_Tareas = new HashSet<Presupuestos_Tareas>();
+            this.SubCategorias = new HashSet<Categoria>();
+            this.Tareas = new HashSet<Tarea>();
         }
     
         public int id { get; set; }
         public string descripcion { get; set; }
-        public int ciclos_test { get; set; }
-        public int tiempo_test { get; set; }
-        public System.DateTime fecha_creacion { get; set; }
-        public System.DateTime fecha_vencimiento { get; set; }
-        public Nullable<double> cargas_sociales { get; set; }
-        public Nullable<double> markup { get; set; }
-        public Nullable<double> costo_base { get; set; }
-        public string creador { get; set; }
-        public int proyecto_id { get; set; }
-        public int estado_id { get; set; }
+        public Nullable<int> categoria_padre { get; set; }
     
-        public virtual Presupuestos_Estados Presupuestos_Estados { get; set; }
-        public virtual Proyecto Proyecto { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Presupuestos_Tareas> Presupuestos_Tareas { get; set; }
+        public virtual ICollection<Categoria> SubCategorias { get; set; }
+        public virtual Categoria Categoria1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Tarea> Tareas { get; set; }
     }
 }

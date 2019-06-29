@@ -1,0 +1,93 @@
+﻿@model IEnumerable<Presupuestador.Models.Presupuesto>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.descripcion)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ciclos_test)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.tiempo_test)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fecha_creacion)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fecha_vencimiento)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.cargas_sociales)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.markup)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.costo_base)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.creador)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Presupuestos_Estados.descripcion)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Proyecto.nombre)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.descripcion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ciclos_test)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.tiempo_test)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fecha_creacion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fecha_vencimiento)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.cargas_sociales)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.markup)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.costo_base)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.creador)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Presupuestos_Estados.descripcion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Proyecto.nombre)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.id })
+        </td>
+    </tr>
+}
+
+</table>
