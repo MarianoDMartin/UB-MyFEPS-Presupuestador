@@ -33,14 +33,20 @@ textarea {
 
 .navbar-inverse .navbar-brand {
     color: #FFFFFF;
+    height: 60px;
 }
 
 .navbar-header img {
     height: 40px;
-    margin-top: 5px;
+    margin-top: 10px;
     float: left;
 }
 
 .navbar-header a {
     margin-left: 5px !important;
+    padding-top: 20px;
+}
+
+.navbar .navbar-nav {
+    margin-top: 5px;
 }
