@@ -1,7 +1,9 @@
 /****** DROP CONSTRAINTS ******/
-ALTER TABLE [Proyectos] DROP CONSTRAINT [FK_Proyectos_Clientes]
+ALTER TABLE [Proyectos] DROP CONSTRAINT [FK_Proyectos_Contactos]
 GO
 ALTER TABLE [Presupuestos] DROP CONSTRAINT [FK_Presupuestos_Proyectos]
+GO
+ALTER TABLE [Presupuestos] DROP CONSTRAINT [FK_Presupuestos_Estados]
 GO
 ALTER TABLE [Presupuestos_Tareas] DROP CONSTRAINT [FK_Presupuestos_Tareas_Presupuestos]
 GO
@@ -11,17 +13,37 @@ ALTER TABLE [Recursos] DROP CONSTRAINT [FK_Recursos_Rangos]
 GO
 ALTER TABLE [Recursos] DROP CONSTRAINT [FK_Recursos_Roles]
 GO
+ALTER TABLE [Categorias] DROP CONSTRAINT [FK_Categorias_Categorias]
+GO
+ALTER TABLE [Plantillas_Tareas] DROP CONSTRAINT [FK_Plantillas_Tareas_Plantillas]
+GO
+ALTER TABLE [Plantillas_Tareas] DROP CONSTRAINT [FK_Plantillas_Tareas_Tareas]
+GO
+ALTER TABLE [Tareas] DROP CONSTRAINT [FK_Tareas_Tipos_Tareas]
+GO
+ALTER TABLE [Tareas] DROP CONSTRAINT [FK_Tareas_Categorias]
+GO
 ALTER TABLE [PresupuestosTareas_Recursos] DROP CONSTRAINT [FK_PresupuestosTareas_Recursos_PresupuestosTareas]
 GO
 ALTER TABLE [PresupuestosTareas_Recursos] DROP CONSTRAINT [FK_PresupuestosTareas_Recursos_Recursos]
 GO
 
 /****** DROP TABLES ******/
-DROP TABLE IF EXISTS Clientes
+DROP TABLE IF EXISTS Contactos
 GO
 DROP TABLE IF EXISTS Proyectos
 GO
+DROP TABLE IF EXISTS Presupuestos_Estados
+GO
 DROP TABLE IF EXISTS Presupuestos
+GO
+DROP TABLE IF EXISTS Tipos_Tareas
+GO
+DROP TABLE IF EXISTS Categorias
+GO
+DROP TABLE IF EXISTS Plantillas
+GO
+DROP TABLE IF EXISTS Plantillas_Tareas
 GO
 DROP TABLE IF EXISTS Tareas
 GO
@@ -37,13 +59,13 @@ DROP TABLE IF EXISTS PresupuestosTareas_Recursos
 GO
 
 /****** CREATE TABLES ******/
-CREATE TABLE Clientes (
+CREATE TABLE Contactos (
     id INT,
     nombre VARCHAR (50) NOT NULL,
-	apellido VARCHAR (50) NOT NULL,
-	documento VARCHAR (50) NOT NULL,
-	genero VARCHAR (50) NOT NULL,
-	CONSTRAINT PK_Clientes PRIMARY KEY NONCLUSTERED (id)
+	mail VARCHAR (50) NOT NULL,
+	telefono VARCHAR (50) NOT NULL,
+	cargo VARCHAR (50) NOT NULL,
+	CONSTRAINT PK_Contactos PRIMARY KEY NONCLUSTERED (id)
 );
 GO
 
@@ -51,18 +73,58 @@ CREATE TABLE Proyectos (
     id INT,
     nombre VARCHAR (50) NOT NULL,
 	descripcion VARCHAR(250),
-	cliente_id INT NOT NULL,
+	contacto_id INT NOT NULL,
 	CONSTRAINT PK_Proyectos PRIMARY KEY NONCLUSTERED (id),
-    CONSTRAINT FK_Proyectos_Clientes FOREIGN KEY (cliente_id) REFERENCES Clientes(id)
+    CONSTRAINT FK_Proyectos_Contactos FOREIGN KEY (contacto_id) REFERENCES Contactos(id)
+);
+GO
+
+CREATE TABLE Presupuestos_Estados (
+    id INT,
+    descripcion VARCHAR (50) NOT NULL,
+	CONSTRAINT PK_Presupuestos_Estados PRIMARY KEY NONCLUSTERED (id)
 );
 GO
 
 CREATE TABLE Presupuestos (
     id INT,
     descripcion VARCHAR (250) NOT NULL,
+	ciclos_test INT NOT NULL,
+	tiempo_test INT NOT NULL,
+	fecha_creacion DATE NOT NULL,
+	fecha_vencimiento DATE NOT NULL,
+	cargas_sociales FLOAT,
+	markup FLOAT,
+	costo_base FLOAT,
+	creador VARCHAR(50),
 	proyecto_id INT NOT NULL,
+	estado_id INT NOT NULL,
 	CONSTRAINT PK_Presupuestos PRIMARY KEY NONCLUSTERED (id),
-    CONSTRAINT FK_Presupuestos_Proyectos FOREIGN KEY (proyecto_id) REFERENCES Proyectos(id)
+    CONSTRAINT FK_Presupuestos_Proyectos FOREIGN KEY (proyecto_id) REFERENCES Proyectos(id),
+	CONSTRAINT FK_Presupuestos_Estados FOREIGN KEY (estado_id) REFERENCES Presupuestos_Estados(id)
+);
+GO
+
+CREATE TABLE Tipos_Tareas (
+    id INT,
+    descripcion VARCHAR (50) NOT NULL,
+	CONSTRAINT PK_Tipos_Tareas PRIMARY KEY NONCLUSTERED (id)
+);
+GO
+
+CREATE TABLE Categorias (
+    id INT,
+    descripcion VARCHAR (500) NOT NULL,
+	categoria_padre INT,
+	CONSTRAINT PK_Categorias PRIMARY KEY NONCLUSTERED (id),
+	CONSTRAINT FK_Categorias_Categorias FOREIGN KEY (categoria_padre) REFERENCES Categorias(id)
+);
+GO
+
+CREATE TABLE Plantillas (
+    id INT,
+    nombre VARCHAR (250) NOT NULL,
+	CONSTRAINT PK_Plantillas PRIMARY KEY NONCLUSTERED (id)
 );
 GO
 
@@ -70,7 +132,21 @@ CREATE TABLE Tareas (
     id INT,
 	titulo VARCHAR (250) NOT NULL,
     descripcion VARCHAR (500) NOT NULL,
-	CONSTRAINT PK_Tareas PRIMARY KEY NONCLUSTERED (id)
+	tipo_tarea_id INT NOT NULL,
+	categoria_id INT NOT NULL,
+	CONSTRAINT PK_Tareas PRIMARY KEY NONCLUSTERED (id),
+	CONSTRAINT FK_Tareas_Tipos_Tareas FOREIGN KEY (tipo_tarea_id) REFERENCES Tipos_Tareas(id),
+	CONSTRAINT FK_Tareas_Categorias FOREIGN KEY (categoria_id) REFERENCES Categorias(id)
+);
+GO
+
+CREATE TABLE Plantillas_Tareas (
+    id INT,
+	plantilla_id INT NOT NULL,
+	tarea_id INT NOT NULL,
+	CONSTRAINT PK_Plantillas_Tareas PRIMARY KEY NONCLUSTERED (id),
+	CONSTRAINT FK_Plantillas_Tareas_Plantillas FOREIGN KEY (plantilla_id) REFERENCES Plantillas(id),
+	CONSTRAINT FK_Plantillas_Tareas_Tareas FOREIGN KEY (tarea_id) REFERENCES Tareas(id)
 );
 GO
 
