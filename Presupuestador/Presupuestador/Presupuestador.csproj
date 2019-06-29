@@ -126,56 +126,68 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\ProyectosController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Cliente.cs">
-      <DependentUpon>PresupuestadorModel.tt</DependentUpon>
+    <Compile Include="Models\Categoria.cs">
+      <DependentUpon>ModelMyFEPS.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\PresupuestadorModel.Context.cs">
+    <Compile Include="Models\Contacto.cs">
+      <DependentUpon>ModelMyFEPS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ModelMyFEPS.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>PresupuestadorModel.Context.tt</DependentUpon>
+      <DependentUpon>ModelMyFEPS.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\PresupuestadorModel.cs">
+    <Compile Include="Models\ModelMyFEPS.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>PresupuestadorModel.tt</DependentUpon>
+      <DependentUpon>ModelMyFEPS.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\PresupuestadorModel.Designer.cs">
+    <Compile Include="Models\ModelMyFEPS.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>PresupuestadorModel.edmx</DependentUpon>
+      <DependentUpon>ModelMyFEPS.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Plantilla.cs">
+      <DependentUpon>ModelMyFEPS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Plantillas_Tareas.cs">
+      <DependentUpon>ModelMyFEPS.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Presupuesto.cs">
-      <DependentUpon>PresupuestadorModel.tt</DependentUpon>
+      <DependentUpon>ModelMyFEPS.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PresupuestosTareas_Recursos.cs">
-      <DependentUpon>PresupuestadorModel.tt</DependentUpon>
+      <DependentUpon>ModelMyFEPS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Presupuestos_Estados.cs">
+      <DependentUpon>ModelMyFEPS.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Presupuestos_Tareas.cs">
-      <DependentUpon>PresupuestadorModel.tt</DependentUpon>
+      <DependentUpon>ModelMyFEPS.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Proyecto.cs">
-      <DependentUpon>PresupuestadorModel.tt</DependentUpon>
+      <DependentUpon>ModelMyFEPS.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Rango.cs">
-      <DependentUpon>PresupuestadorModel.tt</DependentUpon>
+      <DependentUpon>ModelMyFEPS.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Recurso.cs">
-      <DependentUpon>PresupuestadorModel.tt</DependentUpon>
+      <DependentUpon>ModelMyFEPS.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Role.cs">
-      <DependentUpon>PresupuestadorModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\sysdiagram.cs">
-      <DependentUpon>PresupuestadorModel.tt</DependentUpon>
+      <DependentUpon>ModelMyFEPS.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Tarea.cs">
-      <DependentUpon>PresupuestadorModel.tt</DependentUpon>
+      <DependentUpon>ModelMyFEPS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Tipos_Tareas.cs">
+      <DependentUpon>ModelMyFEPS.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Controllers\PresupuestoesController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -188,24 +200,24 @@
     <Content Include="Content\Site.css" />
     <Content Include="Images\favicon.ico" />
     <Content Include="Images\logo.svg" />
-    <Content Include="Models\PresupuestadorModel.Context.tt">
+    <Content Include="Models\ModelMyFEPS.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>PresupuestadorModel.edmx</DependentUpon>
-      <LastGenOutput>PresupuestadorModel.Context.cs</LastGenOutput>
+      <DependentUpon>ModelMyFEPS.edmx</DependentUpon>
+      <LastGenOutput>ModelMyFEPS.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\PresupuestadorModel.tt">
+    <Content Include="Models\ModelMyFEPS.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>PresupuestadorModel.edmx</DependentUpon>
-      <LastGenOutput>PresupuestadorModel.cs</LastGenOutput>
+      <DependentUpon>ModelMyFEPS.edmx</DependentUpon>
+      <LastGenOutput>ModelMyFEPS.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <EntityDeploy Include="Models\PresupuestadorModel.edmx">
+    <EntityDeploy Include="Models\ModelMyFEPS.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>PresupuestadorModel.Designer.cs</LastGenOutput>
+      <LastGenOutput>ModelMyFEPS.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="Models\PresupuestadorModel.edmx.diagram">
-      <DependentUpon>PresupuestadorModel.edmx</DependentUpon>
+    <Content Include="Models\ModelMyFEPS.edmx.diagram">
+      <DependentUpon>ModelMyFEPS.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
@@ -234,6 +246,11 @@
     <Content Include="Views\Proyectos\Details.cshtml" />
     <Content Include="Views\Proyectos\Edit.cshtml" />
     <Content Include="Views\Proyectos\Index.cshtml" />
+    <Content Include="Views\Presupuestos\Create.cshtml" />
+    <Content Include="Views\Presupuestos\Delete.cshtml" />
+    <Content Include="Views\Presupuestos\Details.cshtml" />
+    <Content Include="Views\Presupuestos\Edit.cshtml" />
+    <Content Include="Views\Presupuestos\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

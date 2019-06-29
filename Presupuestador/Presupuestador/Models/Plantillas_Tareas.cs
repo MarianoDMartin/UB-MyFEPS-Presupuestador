@@ -12,12 +12,13 @@ namespace Presupuestador.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class sysdiagram
+    public partial class Plantillas_Tareas
     {
-        public string name { get; set; }
-        public int principal_id { get; set; }
-        public int diagram_id { get; set; }
-        public Nullable<int> version { get; set; }
-        public byte[] definition { get; set; }
+        public int id { get; set; }
+        public int plantilla_id { get; set; }
+        public int tarea_id { get; set; }
+    
+        public virtual Plantilla Plantilla { get; set; }
+        public virtual Tarea Tarea { get; set; }
     }
 }

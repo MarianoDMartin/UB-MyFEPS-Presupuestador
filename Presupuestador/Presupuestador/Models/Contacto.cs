@@ -12,26 +12,21 @@ namespace Presupuestador.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Tarea
+    public partial class Contacto
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Tarea()
+        public Contacto()
         {
-            this.Plantillas_Tareas = new HashSet<Plantillas_Tareas>();
-            this.Presupuestos_Tareas = new HashSet<Presupuestos_Tareas>();
+            this.Proyectos = new HashSet<Proyecto>();
         }
     
         public int id { get; set; }
-        public string titulo { get; set; }
-        public string descripcion { get; set; }
-        public int tipo_tarea_id { get; set; }
-        public int categoria_id { get; set; }
+        public string nombre { get; set; }
+        public string mail { get; set; }
+        public string telefono { get; set; }
+        public string cargo { get; set; }
     
-        public virtual Categoria Categoria { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Plantillas_Tareas> Plantillas_Tareas { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Presupuestos_Tareas> Presupuestos_Tareas { get; set; }
-        public virtual Tipos_Tareas Tipos_Tareas { get; set; }
+        public virtual ICollection<Proyecto> Proyectos { get; set; }
     }
 }

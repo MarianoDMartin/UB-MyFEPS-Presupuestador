@@ -13,10 +13,10 @@ namespace Presupuestador.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class Entities : DbContext
+    public partial class Entities1 : DbContext
     {
-        public Entities()
-            : base("name=Entities")
+        public Entities1()
+            : base("name=Entities1")
         {
         }
     
@@ -25,15 +25,19 @@ namespace Presupuestador.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Cliente> Clientes { get; set; }
+        public virtual DbSet<Categoria> Categorias { get; set; }
+        public virtual DbSet<Contacto> Contactos { get; set; }
+        public virtual DbSet<Plantilla> Plantillas { get; set; }
+        public virtual DbSet<Plantillas_Tareas> Plantillas_Tareas { get; set; }
         public virtual DbSet<Presupuesto> Presupuestos { get; set; }
+        public virtual DbSet<Presupuestos_Estados> Presupuestos_Estados { get; set; }
         public virtual DbSet<Presupuestos_Tareas> Presupuestos_Tareas { get; set; }
         public virtual DbSet<PresupuestosTareas_Recursos> PresupuestosTareas_Recursos { get; set; }
         public virtual DbSet<Proyecto> Proyectos { get; set; }
         public virtual DbSet<Rango> Rangos { get; set; }
         public virtual DbSet<Recurso> Recursos { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
-        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<Tarea> Tareas { get; set; }
+        public virtual DbSet<Tipos_Tareas> Tipos_Tareas { get; set; }
     }
 }

@@ -12,21 +12,18 @@ namespace Presupuestador.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Cliente
+    public partial class Presupuestos_Estados
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Cliente()
+        public Presupuestos_Estados()
         {
-            this.Proyectos = new HashSet<Proyecto>();
+            this.Presupuestos = new HashSet<Presupuesto>();
         }
     
         public int id { get; set; }
-        public string nombre { get; set; }
-        public string apellido { get; set; }
-        public string documento { get; set; }
-        public string genero { get; set; }
+        public string descripcion { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Proyecto> Proyectos { get; set; }
+        public virtual ICollection<Presupuesto> Presupuestos { get; set; }
     }
 }
