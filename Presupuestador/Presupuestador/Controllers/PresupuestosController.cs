@@ -8,7 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using Presupuestador.Models;
 
-namespace Presupuestador.Views
+namespace Presupuestador.Controllers
 {
     public class PresupuestosController : Controller
     {

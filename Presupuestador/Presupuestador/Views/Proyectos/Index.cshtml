@@ -1,24 +1,24 @@
 ﻿@model IEnumerable<Presupuestador.Models.Proyecto>
 
 @{
-    ViewBag.Title = "Presupuestos";
+    ViewBag.Title = "Index";
 }
 
-<h2>Presupuestos</h2>
+<h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Crear Presupuesto", "Create", routeValues: null, htmlAttributes: new { @class = "btn btn-danger", @role = "button" })
+    @Html.ActionLink("Create New", "Create")
 </p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayName("Nombre")
+            @Html.DisplayNameFor(model => model.nombre)
         </th>
         <th>
-            @Html.DisplayName("Descripción")
+            @Html.DisplayNameFor(model => model.descripcion)
         </th>
         <th>
-            @Html.DisplayName("Cliente")
+            @Html.DisplayNameFor(model => model.Contacto.nombre)
         </th>
         <th></th>
     </tr>
@@ -32,12 +32,12 @@
             @Html.DisplayFor(modelItem => item.descripcion)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Cliente.nombre)
+            @Html.DisplayFor(modelItem => item.Contacto.nombre)
         </td>
         <td>
-            <span class="glyphicon glyphicon-pencil" data-tooltip="tooltip" data-placement="bottom" title="Editar" onclick="location.href='@Url.Action("Edit", new {id= item.id})'"></span>
-            <span class="glyphicon glyphicon-eye-open" data-tooltip="tooltip" data-placement="bottom" title="Detalle" onclick="location.href='@Url.Action("Details", new {id= item.id})'"></span>
-            <span class="glyphicon glyphicon-trash" data-tooltip="tooltip" data-placement="bottom" title="Eliminar" onclick="location.href='@Url.Action("Delete", new {id= item.id})'"></span>
+            @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.id })
         </td>
     </tr>
 }
