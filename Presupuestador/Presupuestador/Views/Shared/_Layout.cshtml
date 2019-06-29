@@ -1,10 +1,10 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Universys Francys - @ViewBag.Title</title>
+    <title>Presupuestador - @ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     <link rel="shortcut icon" type="image/x-icon" href="~/Images/favicon.ico" />
@@ -13,8 +13,23 @@
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
                 <img src="~/Images/logo.svg" alt="Logo">
-                @Html.ActionLink("Universys Francys - Presupuestador", "Index", "Proyectos", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Presupuestador - MyFEPS", "Index", "Proyectos", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Inicio", "Index", "Home")</li>
+                    <li>@Html.ActionLink("Tareas", "About", "Home")</li>
+                    <li>@Html.ActionLink("Roles", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("Contactos", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("Proyectos", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("Categorías", "Contact", "Home")</li>
+                </ul>
             </div>
         </div>
     </div>
@@ -22,7 +37,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - Universys Francys</p>
+            <p>&copy; @DateTime.Now.Year - MyFEPS</p>
         </footer>
     </div>
 
