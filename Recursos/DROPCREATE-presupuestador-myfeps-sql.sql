@@ -60,7 +60,7 @@ GO
 
 /****** CREATE TABLES ******/
 CREATE TABLE Contactos (
-    id INT,
+    id INT IDENTITY(1,1),
     nombre VARCHAR (50) NOT NULL,
 	mail VARCHAR (50) NOT NULL,
 	telefono VARCHAR (50) NOT NULL,
@@ -70,7 +70,7 @@ CREATE TABLE Contactos (
 GO
 
 CREATE TABLE Proyectos (
-    id INT,
+    id INT IDENTITY(1,1),
     nombre VARCHAR (50) NOT NULL,
 	descripcion VARCHAR(250),
 	contacto_id INT NOT NULL,
@@ -80,14 +80,14 @@ CREATE TABLE Proyectos (
 GO
 
 CREATE TABLE Presupuestos_Estados (
-    id INT,
+    id INT IDENTITY(1,1),
     descripcion VARCHAR (50) NOT NULL,
 	CONSTRAINT PK_Presupuestos_Estados PRIMARY KEY NONCLUSTERED (id)
 );
 GO
 
 CREATE TABLE Presupuestos (
-    id INT,
+    id INT IDENTITY(1,1),
     descripcion VARCHAR (250) NOT NULL,
 	ciclos_test INT NOT NULL,
 	tiempo_test INT NOT NULL,
@@ -106,14 +106,14 @@ CREATE TABLE Presupuestos (
 GO
 
 CREATE TABLE Tipos_Tareas (
-    id INT,
+    id INT IDENTITY(1,1),
     descripcion VARCHAR (50) NOT NULL,
 	CONSTRAINT PK_Tipos_Tareas PRIMARY KEY NONCLUSTERED (id)
 );
 GO
 
 CREATE TABLE Categorias (
-    id INT,
+    id INT IDENTITY(1,1),
     descripcion VARCHAR (500) NOT NULL,
 	categoria_padre INT,
 	CONSTRAINT PK_Categorias PRIMARY KEY NONCLUSTERED (id),
@@ -122,14 +122,14 @@ CREATE TABLE Categorias (
 GO
 
 CREATE TABLE Plantillas (
-    id INT,
+    id INT IDENTITY(1,1),
     nombre VARCHAR (250) NOT NULL,
 	CONSTRAINT PK_Plantillas PRIMARY KEY NONCLUSTERED (id)
 );
 GO
 
 CREATE TABLE Tareas (
-    id INT,
+    id INT IDENTITY(1,1),
 	titulo VARCHAR (250) NOT NULL,
     descripcion VARCHAR (500) NOT NULL,
 	tipo_tarea_id INT NOT NULL,
@@ -141,7 +141,7 @@ CREATE TABLE Tareas (
 GO
 
 CREATE TABLE Plantillas_Tareas (
-    id INT,
+    id INT IDENTITY(1,1),
 	plantilla_id INT NOT NULL,
 	tarea_id INT NOT NULL,
 	CONSTRAINT PK_Plantillas_Tareas PRIMARY KEY NONCLUSTERED (id),
@@ -151,7 +151,7 @@ CREATE TABLE Plantillas_Tareas (
 GO
 
 CREATE TABLE Presupuestos_Tareas (
-    id INT,
+    id INT IDENTITY(1,1),
 	presupuesto_id INT NOT NULL,
 	tarea_id INT NOT NULL,
 	CONSTRAINT PK_Presupuestos_Tareas PRIMARY KEY NONCLUSTERED (id),
@@ -161,21 +161,21 @@ CREATE TABLE Presupuestos_Tareas (
 GO
 
 CREATE TABLE Rangos (
-    id INT,
+    id INT IDENTITY(1,1),
     descripcion VARCHAR (50)
 	CONSTRAINT PK_Rangos PRIMARY KEY NONCLUSTERED (id)
 );
 GO
 
 CREATE TABLE Roles (
-    id INT,
+    id INT IDENTITY(1,1),
     descripcion VARCHAR (50)
 	CONSTRAINT PK_Roles PRIMARY KEY NONCLUSTERED (id)
 );
 GO
 
 CREATE TABLE Recursos (
-    id INT,
+    id INT IDENTITY(1,1),
     descripcion VARCHAR (50),
 	valorHora INT NOT NULL,
 	rango_id INT NOT NULL,
@@ -187,7 +187,7 @@ CREATE TABLE Recursos (
 GO
 
 CREATE TABLE PresupuestosTareas_Recursos (
-    id INT,
+    id INT IDENTITY(1,1),
 	horas INT,
     presupuesto_tarea_id INT NOT NULL,
 	recurso_id INT NOT NULL,
