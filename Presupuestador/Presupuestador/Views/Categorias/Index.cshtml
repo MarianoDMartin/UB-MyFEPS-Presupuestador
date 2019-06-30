@@ -1,0 +1,74 @@
+﻿@model IEnumerable<Presupuestador.Models.Categoria>
+
+@{
+    ViewBag.Title = "Categorías";
+}
+
+<h2>Categorías</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            Título
+        </th>
+        <th></th>
+    </tr>
+
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.descripcion)
+            </td>
+            <td>
+                <span class="glyphicon glyphicon-pencil" data-tooltip="tooltip" data-placement="bottom" title="Editar" onclick="location.href='@Url.Action("Edit", new { id = item.id })'"></span>
+                @if (item.SubCategorias.Count() == 0)
+                {
+                    <span class="glyphicon glyphicon-trash" data-tooltip="tooltip" data-placement="bottom" title="Eliminar" onclick="location.href='@Url.Action("Delete", new { id = item.id })'"></span>
+                }
+            </td>
+        </tr>
+        if (item.SubCategorias.Count() > 0)
+        {
+            foreach (var subCategoria1 in item.SubCategorias)
+            {
+                <tr>
+                    <td>
+                        - @Html.DisplayFor(modelItem => subCategoria1.descripcion)
+                    </td>
+                    <td>
+                        <span class="glyphicon glyphicon-pencil" data-tooltip="tooltip" data-placement="bottom" title="Editar" onclick="location.href='@Url.Action("Edit", new { id = subCategoria1.id })'"></span>
+                        @if (subCategoria1.SubCategorias.Count() == 0)
+                        {
+                            <span class="glyphicon glyphicon-trash" data-tooltip="tooltip" data-placement="bottom" title="Eliminar" onclick="location.href='@Url.Action("Delete", new { id = subCategoria1.id })'"></span>
+                        }
+                    </td>
+                </tr>
+                if (subCategoria1.SubCategorias.Count() > 0)
+                {
+                    foreach (var subCategoria2 in subCategoria1.SubCategorias)
+                    {
+                        <tr>
+                            <td>
+                                - - @Html.DisplayFor(modelItem => subCategoria2.descripcion)
+                            </td>
+                            <td>
+                                <span class="glyphicon glyphicon-pencil" data-tooltip="tooltip" data-placement="bottom" title="Editar" onclick="location.href='@Url.Action("Edit", new { id = subCategoria2.id })'"></span>
+                                @if (subCategoria2.SubCategorias.Count() == 0)
+                                {
+                                    <span class="glyphicon glyphicon-trash" data-tooltip="tooltip" data-placement="bottom" title="Eliminar" onclick="location.href='@Url.Action("Delete", new { id = subCategoria2.id })'"></span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+            }
+        }
+    }
+
+</table>
+
+<p>
+    @Html.ActionLink("Crear Categoría", "Create")
+</p>
