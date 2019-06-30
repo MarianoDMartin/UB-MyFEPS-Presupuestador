@@ -35,11 +35,13 @@
     </div>
     <div class="container body-content">
         @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - MyFEPS</p>
-        </footer>
     </div>
+    <footer>
+        <div class="container">
+            <img src="~/Images/escudo.png" alt="Escudo">
+            <span>&copy; @DateTime.Now.Year - Presupuestador MyFEPS</span>
+        </div>
+    </footer>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
