@@ -1,26 +1,17 @@
-﻿@model Presupuestador.Models.Proyecto
+﻿@model Presupuestador.Models.Categoria
 
 @{
-    ViewBag.Title = "Eliminar Proyecto";
+    ViewBag.Title = "Eliminar Categoría";
 }
 
-<h2>Eliminar Proyecto</h2>
+<h2>Eliminar Categoría</h2>
 
-<h3>Estas seguro que queres eliminar este proyecto?</h3>
+<h3>Estas seguro que queres eliminar esta categoría?</h3>
 <div>
-    <h4>Proyecto</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            Nombre
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.nombre)
-        </dd>
-
-        <dt>
-            Descripción
+            Título
         </dt>
 
         <dd>
@@ -28,16 +19,17 @@
         </dd>
 
         <dt>
-            Contacto
+            Categoría Padre
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Contacto.nombre)
+            @Html.DisplayFor(model => model.Categoria1.descripcion)
         </dd>
 
     </dl>
 
-    @using (Html.BeginForm()) {
+    @using (Html.BeginForm())
+    {
         @Html.AntiForgeryToken()
 
     <div class="form-actions no-color">
