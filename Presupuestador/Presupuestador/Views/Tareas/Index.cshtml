@@ -1,27 +1,24 @@
 ﻿@model IEnumerable<Presupuestador.Models.Tarea>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Tareas";
 }
 
-<h2>Index</h2>
+<h2>Tareas</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.titulo)
+            Título
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.descripcion)
+            Descripción
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Categoria.descripcion)
+            Categoría
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Tipos_Tareas.descripcion)
+            Tipo
         </th>
         <th></th>
     </tr>
@@ -41,11 +38,14 @@
             @Html.DisplayFor(modelItem => item.Tipos_Tareas.descripcion)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.id })
+            <span class="glyphicon glyphicon-pencil" data-tooltip="tooltip" data-placement="bottom" title="Editar" onclick="location.href='@Url.Action("Edit", new {id= item.id})'"></span>
+            <span class="glyphicon glyphicon-trash" data-tooltip="tooltip" data-placement="bottom" title="Eliminar" onclick="location.href='@Url.Action("Delete", new {id= item.id})'"></span>
         </td>
     </tr>
 }
 
 </table>
+
+<p>
+    @Html.ActionLink("Crear Tarea", "Create")
+</p>
