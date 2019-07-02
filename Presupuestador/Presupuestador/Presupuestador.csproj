@@ -129,6 +129,7 @@
     <Compile Include="Controllers\CategoriasController.cs" />
     <Compile Include="Controllers\PresupuestosController.cs" />
     <Compile Include="Controllers\ProyectosController.cs" />
+    <Compile Include="Controllers\RecursosController.cs" />
     <Compile Include="Controllers\TareasController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -264,6 +265,11 @@
     <Content Include="Views\Tareas\Details.cshtml" />
     <Content Include="Views\Tareas\Edit.cshtml" />
     <Content Include="Views\Tareas\Index.cshtml" />
+    <Content Include="Views\Recursos\Create.cshtml" />
+    <Content Include="Views\Recursos\Delete.cshtml" />
+    <Content Include="Views\Recursos\Details.cshtml" />
+    <Content Include="Views\Recursos\Edit.cshtml" />
+    <Content Include="Views\Recursos\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

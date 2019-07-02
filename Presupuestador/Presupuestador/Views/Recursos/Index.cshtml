@@ -1,0 +1,51 @@
+﻿@model IEnumerable<Presupuestador.Models.Recurso>
+
+@{
+    ViewBag.Title = "Recursos";
+}
+
+<h2>Recursos</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            Nombre
+        </th>
+        <th>
+            Valor hora
+        </th>
+        <th>
+            Rango
+        </th>
+        <th>
+            Rol
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.descripcion)
+        </td>
+        <td>
+            $@Html.DisplayFor(modelItem => item.valorHora)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Rango.descripcion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Role.descripcion)
+        </td>
+        <td>
+            <span class="glyphicon glyphicon-pencil" data-tooltip="tooltip" data-placement="bottom" title="Editar" onclick="location.href='@Url.Action("Edit", new {id= item.id})'"></span>
+            <span class="glyphicon glyphicon-trash" data-tooltip="tooltip" data-placement="bottom" title="Eliminar" onclick="location.href='@Url.Action("Delete", new {id= item.id})'"></span>
+        </td>
+    </tr>
+}
+
+</table>
+
+<p>
+    @Html.ActionLink("Crear Recurso", "Create")
+</p>
