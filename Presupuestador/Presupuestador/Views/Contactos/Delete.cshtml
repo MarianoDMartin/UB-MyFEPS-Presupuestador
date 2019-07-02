@@ -1,12 +1,12 @@
-﻿@model Presupuestador.Models.Recurso
+﻿@model Presupuestador.Models.Contacto
 
 @{
-    ViewBag.Title = "Eliminar Recurso";
+    ViewBag.Title = "Eliminar Contacto";
 }
 
-<h2>Eliminar Recurso</h2>
+<h2>Eliminar Contacto</h2>
 
-<h3>Estas seguro que queres eliminar este recurso?</h3>
+<h3>Estas seguro que queres eliminar este contacto?</h3>
 <div>
     <hr />
     <dl class="dl-horizontal">
@@ -15,31 +15,31 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.descripcion)
+            @Html.DisplayFor(model => model.nombre)
         </dd>
 
         <dt>
-            Valor hora
+            Mail
         </dt>
 
         <dd>
-            $@Html.DisplayFor(model => model.valorHora)
+            @Html.DisplayFor(model => model.mail)
         </dd>
 
         <dt>
-            Rango
+            Teléfono
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Rango.descripcion)
+            @Html.DisplayFor(model => model.telefono)
         </dd>
 
         <dt>
-            Rol
+            Cargo
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Role.descripcion)
+            @Html.DisplayFor(model => model.cargo)
         </dd>
 
     </dl>
