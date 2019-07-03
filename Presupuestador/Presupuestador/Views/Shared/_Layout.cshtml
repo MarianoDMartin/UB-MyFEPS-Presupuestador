@@ -18,14 +18,17 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <img src="~/Images/logo.svg" alt="Logo">
-                @Html.ActionLink("Presupuestador - MyFEPS", "Index", "Proyectos", new { area = "" }, new { @class = "navbar-brand" })
+                <a href="@Url.Action("Index", "Inicio")">
+                    <img src="~/Images/logo.svg" alt="Logo">
+                </a>
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Inicio", "Index", "Home")</li>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>@Html.ActionLink("Inicio", "Index", "Inicio")</li>
+                    <li>@Html.ActionLink("Presupuestos", "Index", "Presupuestos")</li>
                     <li>@Html.ActionLink("Proyectos", "Index", "Proyectos")</li>
                     <li>@Html.ActionLink("Tareas", "Index", "Tareas")</li>
+                    <li>@Html.ActionLink("Plantillas", "Index", "Plantillas")</li>
                     <li>@Html.ActionLink("Categorías", "Index", "Categorias")</li>
                     <li>@Html.ActionLink("Recursos", "Index", "Recursos")</li>
                     <li>@Html.ActionLink("Contactos", "Index", "Contactos")</li>
