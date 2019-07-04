@@ -1,6 +1,12 @@
+<<<<<<< HEAD
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+=======
+﻿using Presupuestador.Models;
+using System;
+using System.Collections.Generic;
+>>>>>>> Se actualiza creación de presupuesto
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -21,42 +27,77 @@ namespace Presupuestador.Controllers
             return View(presupuestos.ToList());
         }
 
-        // GET: Presupuestos/Details/5
-        public ActionResult Details(int? id)
+    // GET: Presupuestos/Create
+    public ActionResult Create()
+    {
+      ViewBag.proyecto_id = new SelectList(db.Proyectos, "id", "nombre");
+      ViewBag.Tareas = new SelectList(db.Tareas, "id", "titulo");
+      ViewBag.Recursos = new SelectList(db.Recursos, "id", "descripcion");
+      ViewModels.Presupuesto prespuesto = new ViewModels.Presupuesto();
+
+      return View(prespuesto);
+    }
+
+    // POST: Presupuestos/Create
+    // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+    // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    //public ActionResult Create([Bind(Include = "id,descripcion,ciclos_test,tiempo_test,fecha_creacion,fecha_vencimiento,cargas_sociales,markup,costo_base,creador,proyecto_id,estado_id,TareasAsignadas")] Presupuestador.ViewModels.Presupuesto presupuesto)
+    public ActionResult Create(Presupuestador.ViewModels.Presupuesto presupuesto)
+    {
+      if (ModelState.IsValid)
+      {
+        Presupuesto modelPresupuesto = new Presupuesto
         {
-            if (id == null)
+          cargas_sociales = presupuesto.cargas_sociales,
+          ciclos_test = presupuesto.ciclos_test,
+          creador = presupuesto.creador,
+          descripcion = presupuesto.descripcion,
+          tiempo_test = presupuesto.tiempo_test,
+          fecha_creacion = DateTime.Now.Date,
+          fecha_vencimiento = presupuesto.fecha_vencimiento,
+          markup = presupuesto.markup,
+          proyecto_id = presupuesto.proyecto_id,
+          estado_id = 1
+        };
+        db.Presupuestos.Add(modelPresupuesto);
+        db.SaveChanges();
+
+        int presupuestos_tareas_id = 0;
+        foreach (var tarea in presupuesto.TareasAsignadas)
+        {
+          // TODO: No funciona el select
+          var presupTareas = db.Presupuestos_Tareas.FirstOrDefault(x => x.id == tarea.TareaId && x.presupuesto_id == modelPresupuesto.id);
+
+          if (presupTareas != null)
+          {
+            presupuestos_tareas_id = presupTareas.id;
+          }
+          else
+          {
+            Presupuestos_Tareas presupuestos_tareas = new Presupuestos_Tareas
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Presupuesto presupuesto = db.Presupuestos.Find(id);
-            if (presupuesto == null)
-            {
-                return HttpNotFound();
-            }
-            return View(presupuesto);
+              presupuesto_id = modelPresupuesto.id,
+              tarea_id = tarea.TareaId
+            };
+            db.Presupuestos_Tareas.Add(presupuestos_tareas);
+            db.SaveChanges();
+            presupuestos_tareas_id = presupuestos_tareas.id;
+          }
+
+          PresupuestosTareas_Recursos presupuestos_tareas_recursos = new PresupuestosTareas_Recursos
+          {
+            presupuesto_tarea_id = presupuestos_tareas_id,
+            recurso_id = tarea.RecursoId,
+            horas = tarea.Tiempo
+          };
+          db.PresupuestosTareas_Recursos.Add(presupuestos_tareas_recursos);
+          db.SaveChanges();
         }
 
-        // GET: Presupuestos/Create
-        public ActionResult Create()
-        {
-            ViewBag.estado_id = new SelectList(db.Presupuestos_Estados, "id", "descripcion");
-            ViewBag.proyecto_id = new SelectList(db.Proyectos, "id", "nombre");
-            return View();
-        }
-
-        // POST: Presupuestos/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "id,descripcion,ciclos_test,tiempo_test,fecha_creacion,fecha_vencimiento,cargas_sociales,markup,costo_base,creador,proyecto_id,estado_id")] Presupuesto presupuesto)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Presupuestos.Add(presupuesto);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+        return RedirectToAction("Index");
+      }
 
             ViewBag.estado_id = new SelectList(db.Presupuestos_Estados, "id", "descripcion", presupuesto.estado_id);
             ViewBag.proyecto_id = new SelectList(db.Proyectos, "id", "nombre", presupuesto.proyecto_id);
@@ -133,4 +174,24 @@ namespace Presupuestador.Controllers
             base.Dispose(disposing);
         }
     }
+<<<<<<< HEAD
 }
+=======
+
+    public PartialViewResult AgregarTarea(int tareaId, string tareaNombre, int recursoId, string recursoNombre, int valorHora)
+    {
+      ViewModels.Tarea tarea = new ViewModels.Tarea
+      {
+        TareaId = tareaId,
+        Descripcion = tareaNombre,
+        RecursoId = recursoId,
+        Recurso = recursoNombre,
+        Rango = "TEST",
+        Rol = "TEST",
+        Tiempo = valorHora
+      };
+      return PartialView("_Tareas", tarea);
+    }
+  }
+}
+>>>>>>> Se actualiza creación de presupuesto

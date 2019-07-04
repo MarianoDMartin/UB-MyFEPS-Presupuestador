@@ -1,0 +1,34 @@
+﻿@model Presupuestador.ViewModels.Tarea
+@using (Html.BeginCollectionItem("TareasAsignadas"))
+{
+    <li id="li-@Model.TareaId" class=""><label>Tarea: </label>@Model.Descripcion / <label>Recurso: </label>@Model.Recurso / <label>Rol: </label>@Model.Rol / <label>Rango: </label>@Model.Rango / <label>Tiempo: </label>@Model.Tiempo <span style="cursor:pointer;" class="glyphicon glyphicon-remove" data-tooltip="tooltip" data-placement="bottom" title="Remover" onclick="RemoverTarea(@Model.TareaId)"></span></li>
+    @Html.HiddenFor(x => x.TareaId, new { id = "hdn-tareaid-" + Model.TareaId })
+    @Html.HiddenFor(x => x.Descripcion, new { id = "hdn-anombre-" + Model.TareaId })
+    @*@Html.HiddenFor(x => x.USUARIOID, new { id = "hdn-uid-" + Model.TareaId })*@
+    @Html.HiddenFor(x => x.Rol, new { id = "hdn-rid-" + Model.TareaId })
+    @Html.HiddenFor(x => x.Tiempo, new { id = "hdn-tiempo-" + Model.TareaId })
+    @Html.HiddenFor(x => x.RecursoId, new { id = "hdn-recursoId-" + Model.TareaId })
+    @*@Html.HiddenFor(x => x.ROL.NOMBRE, new { id = "hdn-rnombre-" + Model.TareaId })*@
+
+    @*<tr style="text-align:center;">
+            <td>
+                @Html.DisplayFor(modelItem => Model.Descripcion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => Model.Recurso)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => Model.Rol)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => Model.Rango)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => Model.Tiempo)
+            </td>
+            <td>
+                <span class="glyphicon glyphicon-remove" data-tooltip="tooltip" data-placement="bottom" title="Remover" onclick="RemoverTarea(@Model.TareaId)"></span>
+            </td>
+        </tr>
+        @Html.HiddenFor(modelItem => Model.TareaId, new { id = "hdn-tareaid-" + Model.TareaId })*@
+}
