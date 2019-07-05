@@ -1,14 +1,15 @@
 ﻿@model IEnumerable<Presupuestador.Models.Plantilla>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Plantillas";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+    <h2>Plantillas Presupuestos</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @*@Html.ActionLink("Create New", "Create")*@
+    @Html.ActionLink("Crear Plantilla", "Create", routeValues: null, htmlAttributes: new { @class = "btn btn-danger", @role = "button" })
 </p>
 <table class="table">
     <tr>
@@ -22,13 +23,17 @@
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.nombre)
+
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.id })
-        </td>
-    </tr>
-}
+            <span class="glyphicon glyphicon-pencil" data-tooltip="tooltip" data-placement="bottom" title="Editar" onclick="location.href='@Url.Action("Edit", new {id= item.id})'"></span>
+            <span class="glyphicon glyphicon-trash" data-tooltip="tooltip" data-placement="bottom" title="Eliminar" onclick="location.href='@Url.Action("Delete", new {id= item.id})'"></span>
 
-</table>
+            @*@Html.ActionLink("Editar", "Edit", new { id = item.id }) |
+            @Html.ActionLink("Detalles", "Details", new { id = item.id }) |
+            @Html.ActionLink("Borrar", "Delete", new { id = item.id })*@
+        </td>
+      </tr>
+        }
+
+        </table>
