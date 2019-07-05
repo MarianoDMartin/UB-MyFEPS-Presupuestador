@@ -1,6 +1,6 @@
 ﻿namespace Presupuestador.ViewModels
 {
-  public class Tarea
+  public class TareaViewModel
   {
     public int TareaId { get; set; }
 

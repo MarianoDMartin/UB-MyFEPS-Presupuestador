@@ -1,93 +1,62 @@
 ﻿@model IEnumerable<Presupuestador.Models.Presupuesto>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Presupuestos";
 }
 
-<h2>Index</h2>
+<h2>Presupuestos</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.descripcion)
+            @Html.DisplayName("Descripción")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ciclos_test)
+            @Html.DisplayName("Fecha Creación")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.tiempo_test)
+            @Html.DisplayName("Fecha Vencimiento")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.fecha_creacion)
+            @Html.DisplayName("Costo")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.fecha_vencimiento)
+            @Html.DisplayName("Creador")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.cargas_sociales)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.markup)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.costo_base)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.creador)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Presupuestos_Estados.descripcion)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Proyecto.nombre)
+            @Html.DisplayName("Estado")
         </th>
         <th></th>
     </tr>
 
 @foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.descripcion)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ciclos_test)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.tiempo_test)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.fecha_creacion)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.fecha_vencimiento)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.cargas_sociales)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.markup)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.costo_base)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.creador)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Presupuestos_Estados.descripcion)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Proyecto.nombre)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.id })
-        </td>
-    </tr>
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.descripcion)
+    </td>
+    <td>
+        @Convert.ToDateTime(item.fecha_creacion).ToString("dd/MM/yyyy")
+    </td>
+    <td>
+        @Convert.ToDateTime(item.fecha_vencimiento).ToString("dd/MM/yyyy")
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.costo_base)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.creador)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Presupuestos_Estados.descripcion)
+    </td>
+    <td>
+        <span class="glyphicon glyphicon-pencil" data-tooltip="tooltip" data-placement="bottom" title="Editar" onclick="location.href='@Url.Action("Edit", new {id= item.id})'"></span>
+        <span class="glyphicon glyphicon-eye-open" data-tooltip="tooltip" data-placement="bottom" title="Detalle" onclick="location.href='@Url.Action("Details", new {id= item.id})'"></span>
+        <span class="glyphicon glyphicon-trash" data-tooltip="tooltip" data-placement="bottom" title="Eliminar" onclick="location.href='@Url.Action("Delete", new {id= item.id})'"></span>
+    </td>
+</tr>
 }
-
 </table>
+<p>
+    @Html.ActionLink("Crear Presupuesto", "Create", routeValues: null, htmlAttributes: new { @class = "btn btn-danger", @role = "button" })
+</p>
