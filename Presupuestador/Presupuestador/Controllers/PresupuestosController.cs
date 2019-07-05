@@ -164,9 +164,27 @@ namespace Presupuestador.Views
       {
         return HttpNotFound();
       }
-      ViewBag.estado_id = new SelectList(db.Presupuestos_Estados, "id", "descripcion", presupuesto.estado_id);
       ViewBag.proyecto_id = new SelectList(db.Proyectos, "id", "nombre", presupuesto.proyecto_id);
-      return View(presupuesto);
+      ViewBag.estado_id = new SelectList(db.Presupuestos_Estados, "id", "descripcion", presupuesto.estado_id);
+      ViewBag.Tareas = new SelectList(db.Tareas, "id", "titulo");
+      IEnumerable<SelectListItem> selectList = db.Recursos.ToList().Select(s => new SelectListItem { Value = s.id.ToString(), Text = $"{s.descripcion} ({s.Role.descripcion} {s.Rango.descripcion})" });
+      ViewBag.Recursos = new SelectList(selectList, "Value", "Text");
+
+      PresupuestoViewModel prespuestoViewModel = new PresupuestoViewModel
+      {
+        cargas_sociales = presupuesto.cargas_sociales,
+        ciclos_test = presupuesto.ciclos_test,
+        creador = presupuesto.creador,
+        descripcion = presupuesto.descripcion,
+        estado_id = presupuesto.estado_id,
+        fecha_vencimiento = presupuesto.fecha_vencimiento,
+        id = presupuesto.id,
+        markup = presupuesto.markup,
+        proyecto_id = presupuesto.proyecto_id,
+        tiempo_test = presupuesto.tiempo_test
+      };
+
+      return View(prespuestoViewModel);
     }
 
     // POST: Presupuestos/Edit/5
