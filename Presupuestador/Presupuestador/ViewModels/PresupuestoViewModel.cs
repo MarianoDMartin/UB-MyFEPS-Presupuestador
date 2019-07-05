@@ -21,5 +21,8 @@ namespace Presupuestador.ViewModels
     public int Recursos { get; set; }
     public int valorHora { get; set; }
     public List<TareaViewModel> TareasAsignadas { get; set; } = new List<TareaViewModel>();
+    public double? CostoConCargas { get; set; }
+    public double? CostoMarkup { get; set; }
+    public string Estado { get; set; }
   }
 }

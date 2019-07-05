@@ -33,7 +33,23 @@ namespace Presupuestador.Views
       {
         return HttpNotFound();
       }
-      return View(presupuesto);
+      PresupuestoViewModel presupuestoViewModel = new PresupuestoViewModel
+      {
+        descripcion = presupuesto.descripcion,
+        ciclos_test = presupuesto.ciclos_test,
+        tiempo_test = presupuesto.tiempo_test,
+        fecha_creacion = presupuesto.fecha_creacion,
+        fecha_vencimiento = presupuesto.fecha_vencimiento,
+        cargas_sociales = presupuesto.cargas_sociales,
+        markup = presupuesto.markup,
+        costo_base = presupuesto.costo_base,
+        creador = presupuesto.creador,
+        Estado = presupuesto.Presupuestos_Estados.descripcion,
+        CostoConCargas = presupuesto.costo_base + ((presupuesto.cargas_sociales * presupuesto.costo_base) / 100),
+        CostoMarkup = presupuesto.costo_base + ((presupuesto.markup * presupuesto.costo_base) / 100)
+      };
+
+      return View(presupuestoViewModel);
     }
 
     // GET: Presupuestos/Create
@@ -76,10 +92,10 @@ namespace Presupuestador.Views
         db.SaveChanges();
 
         int presupuestos_tareas_id = 0;
+        List<PresupuestosTareas_Recursos> tareasRecursos = new List<PresupuestosTareas_Recursos>();
         foreach (var tarea in presupuesto.TareasAsignadas)
         {
-          var listaTareas = db.Presupuestos_Tareas.ToList();
-          var presupTareas = db.Presupuestos_Tareas.Where(x => x.tarea_id == tarea.TareaId && x.presupuesto_id == modelPresupuesto.id).SingleOrDefault();
+          var presupTareas = db.Presupuestos_Tareas.ToList().Where(x => x.tarea_id == tarea.TareaId && x.presupuesto_id == modelPresupuesto.id).SingleOrDefault();
 
           if (presupTareas != null)
           {
@@ -104,8 +120,29 @@ namespace Presupuestador.Views
             horas = tarea.Tiempo
           };
           db.PresupuestosTareas_Recursos.Add(presupuestos_tareas_recursos);
+          tareasRecursos.Add(presupuestos_tareas_recursos);
           db.SaveChanges();
         }
+
+        //1) acumular horas de cada tarea por persona, y multiplicarlo por su valor
+        var recursosHoras = tareasRecursos.GroupBy(x => x.recurso_id)
+                            .Select(y => new RecursoHora
+                            {
+                              RecursoId = y.Key,
+                              CantidadHoras = y.Sum(x => x.horas.GetValueOrDefault())
+                            }).ToList();
+
+        foreach (var item in recursosHoras)
+        {
+          int valorHora = db.Recursos.Where(x => x.id == item.RecursoId).FirstOrDefault().valorHora;
+          item.Valor = item.CantidadHoras * valorHora;
+        }
+
+        //2) Sumar los montos de cada persona anteriores, y da el costo sin cargas sociales
+        var costoBase = recursosHoras.Sum(x => x.Valor);
+        var pre = db.Presupuestos.Find(modelPresupuesto.id);
+        pre.costo_base = costoBase;
+        db.SaveChanges();
 
         return RedirectToAction("Index");
       }
@@ -199,5 +236,14 @@ namespace Presupuestador.Views
       };
       return PartialView("_Tareas", tarea);
     }
+  }
+  
+  public class RecursoHora
+  {
+    public int RecursoId { get; set; }
+
+    public int CantidadHoras { get; set; }
+
+    public double Valor { get; set; }
   }
 }

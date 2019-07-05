@@ -1,4 +1,4 @@
-﻿@model Presupuestador.Models.Presupuesto
+﻿@model Presupuestador.ViewModels.PresupuestoViewModel
 
 @{
     ViewBag.Title = "Details";
@@ -55,7 +55,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.cargas_sociales)
+            @Html.DisplayFor(model => model.cargas_sociales)%
         </dd>
 
         <dt>
@@ -63,7 +63,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.markup)
+            @Html.DisplayFor(model => model.markup)%
         </dd>
 
         <dt>
@@ -72,6 +72,22 @@
 
         <dd>
             @Html.DisplayFor(model => model.costo_base)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Costo con Cargas Sociales")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CostoConCargas)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Costo con Markup")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CostoMarkup)
         </dd>
 
         <dt>
@@ -87,7 +103,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Presupuestos_Estados.descripcion)
+            @Html.DisplayFor(model => model.Estado)
         </dd>
 
     </dl>
