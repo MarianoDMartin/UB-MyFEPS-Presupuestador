@@ -150,6 +150,9 @@ namespace Presupuestador.Views
 
       ViewBag.estado_id = new SelectList(db.Presupuestos_Estados, "id", "descripcion", presupuesto.estado_id);
       ViewBag.proyecto_id = new SelectList(db.Proyectos, "id", "nombre", presupuesto.proyecto_id);
+      ViewBag.Tareas = new SelectList(db.Tareas, "id", "titulo");
+      IEnumerable<SelectListItem> selectList = db.Recursos.ToList().Select(s => new SelectListItem { Value = s.id.ToString(), Text = $"{s.descripcion} ({s.Role.descripcion} {s.Rango.descripcion})" });
+      ViewBag.Recursos = new SelectList(selectList, "Value", "Text");
       return View(presupuesto);
     }
 
