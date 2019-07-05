@@ -1,4 +1,4 @@
-﻿@model Presupuestador.ViewModels.Tarea
+﻿@model Presupuestador.ViewModels.TareaViewModel
 @using (Html.BeginCollectionItem("TareasAsignadas"))
 {
     <li id="li-@Model.TareaId" class=""><label>Tarea: </label>@Model.Descripcion / <label>Recurso: </label>@Model.Recurso / <label>Horas: </label>@Model.Tiempo <span style="cursor:pointer;" class="glyphicon glyphicon-remove" data-tooltip="tooltip" data-placement="bottom" title="Remover" onclick="RemoverTarea(@Model.TareaId)"></span></li>
