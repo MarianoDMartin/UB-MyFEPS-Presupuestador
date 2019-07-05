@@ -17,7 +17,8 @@ namespace Presupuestador.Views
     // GET: Presupuestos
     public ActionResult Index()
     {
-      var presupuestos = db.Presupuestos.Include(p => p.Presupuestos_Estados).Include(p => p.Proyecto);
+      var presupuestos = db.Presupuestos.Where(x => x.Presupuestos_Estados.descripcion.ToLower() != "eliminado")
+                            .Include(p => p.Presupuestos_Estados).Include(p => p.Proyecto);
       return View(presupuestos.ToList());
     }
 
@@ -56,7 +57,7 @@ namespace Presupuestador.Views
     public ActionResult Create()
     {
       ViewBag.proyecto_id = new SelectList(db.Proyectos, "id", "nombre");
-      ViewBag.estado_id = new SelectList(db.Presupuestos_Estados, "id", "descripcion");
+      ViewBag.estado_id = new SelectList(db.Presupuestos_Estados.Where(e => e.descripcion!="Eliminado"), "id", "descripcion");
       ViewBag.Tareas = new SelectList(db.Tareas, "id", "titulo");
       IEnumerable<SelectListItem> selectList = db.Recursos.ToList().Select(s => new SelectListItem { Value = s.id.ToString(), Text = $"{s.descripcion} ({s.Role.descripcion} {s.Rango.descripcion})" });
       ViewBag.Recursos = new SelectList(selectList, "Value", "Text");
@@ -86,7 +87,7 @@ namespace Presupuestador.Views
           fecha_vencimiento = presupuesto.fecha_vencimiento.Value,
           markup = presupuesto.markup,
           proyecto_id = presupuesto.proyecto_id,
-          estado_id = 1
+          estado_id = presupuesto.estado_id
         };
         db.Presupuestos.Add(modelPresupuesto);
         db.SaveChanges();
@@ -226,7 +227,17 @@ namespace Presupuestador.Views
     public ActionResult DeleteConfirmed(int id)
     {
       Presupuesto presupuesto = db.Presupuestos.Find(id);
-      db.Presupuestos.Remove(presupuesto);
+      Presupuestos_Estados estadoEliminado = db.Presupuestos_Estados.ToList().Where(x => x.descripcion.ToLower() == "eliminado").SingleOrDefault();
+      
+      if(estadoEliminado == null)
+      {
+        estadoEliminado = new Presupuestos_Estados()
+        {
+            descripcion = "Eliminado"
+        };
+      }
+      presupuesto.Presupuestos_Estados = estadoEliminado;
+      db.Presupuestos_Estados.Add(estadoEliminado);
       db.SaveChanges();
       return RedirectToAction("Index");
     }
