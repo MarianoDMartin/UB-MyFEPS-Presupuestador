@@ -52,7 +52,7 @@ textarea {
 }
 
 footer {
-    position: absolute;
+    position: fixed;
     bottom: 0;
     width: 100%;
     height: 60px;
@@ -67,4 +67,8 @@ footer > .container {
 
 footer > .container img {
     height: 40px;
+}
+
+.espacio-footer {
+    height: 60px;
 }
