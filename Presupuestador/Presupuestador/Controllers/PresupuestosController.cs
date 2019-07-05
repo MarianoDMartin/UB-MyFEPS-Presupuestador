@@ -160,7 +160,7 @@ namespace Presupuestador.Views
       {
         return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
       }
-      Presupuesto presupuesto = db.Presupuestos.Find(id);
+      Presupuesto presupuesto = db.Presupuestos.Where(x => x.id == id).Include(p => p.Presupuestos_Tareas).FirstOrDefault();
       if (presupuesto == null)
       {
         return HttpNotFound();
@@ -185,6 +185,25 @@ namespace Presupuestador.Views
         tiempo_test = presupuesto.tiempo_test
       };
 
+      int tareaId;
+      string tarea, recurso;
+      foreach (var preTareas in presupuesto.Presupuestos_Tareas)
+      {
+        tareaId = preTareas.tarea_id;
+        tarea = db.Tareas.Where(x => x.id == tareaId).FirstOrDefault().descripcion;
+        foreach (var tareasRecursos in preTareas.PresupuestosTareas_Recursos)
+        {
+          recurso = db.Recursos.Where(x => x.id == tareasRecursos.recurso_id).FirstOrDefault().descripcion;
+          prespuestoViewModel.TareasAsignadas.Add(new TareaViewModel
+          {            
+            TareaId = tareaId,
+            Descripcion = tarea,
+            Recurso = recurso,
+            Tiempo = tareasRecursos.horas.GetValueOrDefault()
+          });
+        }
+      }
+
       return View(prespuestoViewModel);
     }
 
@@ -193,12 +212,85 @@ namespace Presupuestador.Views
     // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public ActionResult Edit([Bind(Include = "id,descripcion,ciclos_test,tiempo_test,fecha_creacion,fecha_vencimiento,cargas_sociales,markup,costo_base,creador,proyecto_id,estado_id")] Presupuesto presupuesto)
+    //public ActionResult Edit([Bind(Include = "id,descripcion,ciclos_test,tiempo_test,fecha_creacion,fecha_vencimiento,cargas_sociales,markup,costo_base,creador,proyecto_id,estado_id")] Presupuesto presupuesto)
+    public ActionResult Edit(PresupuestoViewModel presupuesto)
     {
       if (ModelState.IsValid)
       {
-        db.Entry(presupuesto).State = EntityState.Modified;
+        Presupuesto modelPresupuesto = db.Presupuestos.Find(presupuesto.id);
+        modelPresupuesto.cargas_sociales = presupuesto.cargas_sociales;
+        modelPresupuesto.ciclos_test = presupuesto.ciclos_test;
+        modelPresupuesto.creador = presupuesto.creador;
+        modelPresupuesto.descripcion = presupuesto.descripcion;
+        modelPresupuesto.tiempo_test = presupuesto.tiempo_test;
+        modelPresupuesto.fecha_creacion = DateTime.Now.Date;
+        modelPresupuesto.fecha_vencimiento = presupuesto.fecha_vencimiento.Value;
+        modelPresupuesto.markup = presupuesto.markup;
+        modelPresupuesto.proyecto_id = presupuesto.proyecto_id;
+        modelPresupuesto.estado_id = presupuesto.estado_id;        
         db.SaveChanges();
+
+        /*var preTareas = db.Presupuestos_Tareas.Where(x => x.presupuesto_id == presupuesto.id).Include(p => p.PresupuestosTareas_Recursos).ToList();
+        foreach (var preTarea in preTareas)
+        {
+          preTarea.PresupuestosTareas_Recursos.Clear();
+          db.Presupuestos_Tareas.Remove(preTarea);
+          db.SaveChanges();
+        }*/
+
+        /*int presupuestos_tareas_id = 0;
+        List<PresupuestosTareas_Recursos> tareasRecursos = new List<PresupuestosTareas_Recursos>();
+        foreach (var tarea in presupuesto.TareasAsignadas)
+        {
+          var presupTareas = db.Presupuestos_Tareas.ToList().Where(x => x.tarea_id == tarea.TareaId && x.presupuesto_id == modelPresupuesto.id).SingleOrDefault();
+
+          if (presupTareas != null)
+          {
+            presupuestos_tareas_id = presupTareas.id;
+          }
+          else
+          {
+            Presupuestos_Tareas presupuestos_tareas = new Presupuestos_Tareas
+            {
+              presupuesto_id = modelPresupuesto.id,
+              tarea_id = tarea.TareaId
+            };
+            db.Presupuestos_Tareas.Add(presupuestos_tareas);
+            db.SaveChanges();
+            presupuestos_tareas_id = presupuestos_tareas.id;
+          }
+
+          PresupuestosTareas_Recursos presupuestos_tareas_recursos = new PresupuestosTareas_Recursos
+          {
+            presupuesto_tarea_id = presupuestos_tareas_id,
+            recurso_id = tarea.RecursoId,
+            horas = tarea.Tiempo
+          };
+          db.PresupuestosTareas_Recursos.Add(presupuestos_tareas_recursos);
+          tareasRecursos.Add(presupuestos_tareas_recursos);
+          db.SaveChanges();
+        }
+
+        //1) acumular horas de cada tarea por persona, y multiplicarlo por su valor
+        var recursosHoras = tareasRecursos.GroupBy(x => x.recurso_id)
+                            .Select(y => new RecursoHora
+                            {
+                              RecursoId = y.Key,
+                              CantidadHoras = y.Sum(x => x.horas.GetValueOrDefault())
+                            }).ToList();
+
+        foreach (var item in recursosHoras)
+        {
+          int valorHora = db.Recursos.Where(x => x.id == item.RecursoId).FirstOrDefault().valorHora;
+          item.Valor = item.CantidadHoras * valorHora;
+        }
+
+        //2) Sumar los montos de cada persona anteriores, y da el costo sin cargas sociales
+        var costoBase = recursosHoras.Sum(x => x.Valor);
+        var pre = db.Presupuestos.Find(modelPresupuesto.id);
+        pre.costo_base = costoBase;
+        db.SaveChanges();*/
+
         return RedirectToAction("Index");
       }
       ViewBag.estado_id = new SelectList(db.Presupuestos_Estados, "id", "descripcion", presupuesto.estado_id);
