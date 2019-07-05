@@ -224,6 +224,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="Images\favicon.ico" />
     <Content Include="Images\logo.svg" />
+    <Content Include="Images\navegacion.png" />
     <Content Include="Models\ModelMyFEPS.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>ModelMyFEPS.edmx</DependentUpon>
