@@ -88,7 +88,28 @@ namespace Presupuestador.Controllers
             {
                 return HttpNotFound();
             }
-            return View(plantilla);
+
+            List<Plantillas_Tareas> tareasAsignadas = db.Plantillas_Tareas.Where(x => x.plantilla_id == id.Value).ToList();
+
+            List<TareaViewModel> tareasViewModel = new List<TareaViewModel>();
+            foreach(var tarea in tareasAsignadas)
+            {
+                tareasViewModel.Add(new TareaViewModel()
+                {
+                    Descripcion = tarea.Tarea.titulo,
+                    TareaId = tarea.tarea_id
+                });
+            }
+
+            PlantillaViewModel plantillaViewModel = new PlantillaViewModel()
+            {
+                id = id.Value,
+                nombre = plantilla.nombre,
+                TareasAsignadas = tareasViewModel
+            };
+
+            ViewBag.tarea_id = new SelectList(db.Tareas, "id", "titulo");
+            return View(plantillaViewModel);
         }
 
         // POST: Plantillas/Edit/5
@@ -96,15 +117,34 @@ namespace Presupuestador.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "id,nombre")] Plantilla plantilla)
+        public ActionResult Edit(PlantillaViewModel plantillaViewModel)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(plantilla).State = EntityState.Modified;
+                Plantilla plantilla = db.Plantillas.Find(plantillaViewModel.id);
+                plantilla.nombre = plantillaViewModel.nombre;
+
+                var plantillas_tareas = db.Plantillas_Tareas.Where(x => x.plantilla_id == plantilla.id).ToList();
+                foreach(var plantilla_tarea in plantillas_tareas)
+                {
+                    db.Plantillas_Tareas.Remove(plantilla_tarea);
+                }
+                db.SaveChanges();
+                foreach (var tarea in plantillaViewModel.TareasAsignadas)
+                {
+                    if(tarea.TareaId != 0) { 
+                        Plantillas_Tareas plantillas_Tareas = new Plantillas_Tareas()
+                        {
+                            plantilla_id = plantilla.id,
+                            tarea_id = tarea.TareaId
+                        };
+                        db.Plantillas_Tareas.Add(plantillas_Tareas);
+                    }
+                }
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(plantilla);
+            return View(plantillaViewModel);
         }
 
         // GET: Plantillas/Delete/5
@@ -127,6 +167,11 @@ namespace Presupuestador.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            var plantillas_tareas = db.Plantillas_Tareas.Where(x => x.plantilla_id == id).ToList();
+            foreach (var plantilla_tarea in plantillas_tareas)
+            {
+                db.Plantillas_Tareas.Remove(plantilla_tarea);
+            }
             Plantilla plantilla = db.Plantillas.Find(id);
             db.Plantillas.Remove(plantilla);
             db.SaveChanges();

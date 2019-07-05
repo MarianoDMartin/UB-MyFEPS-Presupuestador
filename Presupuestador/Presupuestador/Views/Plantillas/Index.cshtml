@@ -5,16 +5,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-    <h2>Plantillas Presupuestos</h2>
+<h2>Plantillas</h2>
 
-<p>
-    @*@Html.ActionLink("Create New", "Create")*@
-    @Html.ActionLink("Crear Plantilla", "Create", routeValues: null, htmlAttributes: new { @class = "btn btn-danger", @role = "button" })
-</p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.nombre)
+            Nombre
         </th>
         <th></th>
     </tr>
@@ -28,12 +24,12 @@
         <td>
             <span class="glyphicon glyphicon-pencil" data-tooltip="tooltip" data-placement="bottom" title="Editar" onclick="location.href='@Url.Action("Edit", new {id= item.id})'"></span>
             <span class="glyphicon glyphicon-trash" data-tooltip="tooltip" data-placement="bottom" title="Eliminar" onclick="location.href='@Url.Action("Delete", new {id= item.id})'"></span>
-
-            @*@Html.ActionLink("Editar", "Edit", new { id = item.id }) |
-            @Html.ActionLink("Detalles", "Details", new { id = item.id }) |
-            @Html.ActionLink("Borrar", "Delete", new { id = item.id })*@
         </td>
       </tr>
         }
 
-        </table>
+</table>
+
+<p>
+    @Html.ActionLink("Crear Plantilla", "Create", routeValues: null, htmlAttributes: new { @class = "btn btn-danger", @role = "button" })
+</p>
