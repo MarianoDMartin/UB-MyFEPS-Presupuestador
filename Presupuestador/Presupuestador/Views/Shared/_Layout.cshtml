@@ -26,14 +26,16 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li>@Html.ActionLink("Inicio", "Index", "Inicio")</li>
-                    <li>@Html.ActionLink("Presupuestos", "Index", "Presupuestos")</li>
                     <li>@Html.ActionLink("Proyectos", "Index", "Proyectos")</li>
-                    <li>@Html.ActionLink("Tareas", "Index", "Tareas")</li>
+                    <li>@Html.ActionLink("Presupuestos", "Index", "Presupuestos")</li>
                     <li>@Html.ActionLink("Plantillas", "Index", "Plantillas")</li>
-                    <li>@Html.ActionLink("Categorías", "Index", "Categorias")</li>
-                    <li>@Html.ActionLink("Recursos", "Index", "Recursos")</li>
                     <li>@Html.ActionLink("Contactos", "Index", "Contactos")</li>
-                </ul>
+                    <li>@Html.ActionLink("Categorías", "Index", "Categorias")</li>
+                    <li>@Html.ActionLink("Tareas", "Index", "Tareas")</li>
+                    <li>@Html.ActionLink("Recursos", "Index", "Recursos")</li>
+                    <li>@Html.ActionLink("Ayuda", "Index", "Ayuda")</li>
+                    <li>@*<span class="glyphicon glyphicon-question-sign" data-tooltip="" aria-hidden="true" data-placement="right" title="Ayuda" onclick="location.href='@Url.Action("Index", "Ayuda")'"></span>*@</li>
+</ul>
             </div>
         </div>
     </div>

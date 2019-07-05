@@ -140,6 +140,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\CategoriasController.cs" />
     <Compile Include="Controllers\ContactosController.cs" />
+    <Compile Include="Controllers\AyudaController.cs" />
     <Compile Include="Controllers\InicioController.cs" />
     <Compile Include="Controllers\PlantillasController.cs" />
     <Compile Include="Controllers\PresupuestosController.cs" />
@@ -304,6 +305,7 @@
     <Content Include="Views\Plantillas\Edit.cshtml" />
     <Content Include="Views\Plantillas\Index.cshtml" />
     <Content Include="Views\Plantillas\_Tareas.cshtml" />
+    <Content Include="Views\Ayuda\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
