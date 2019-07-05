@@ -98,33 +98,6 @@
             </div>
 
             <div class="form-row">
-                @*<table class="table">
-                        <tr>
-                            <th style="text-align:center;">
-                                @Html.DisplayName("Tarea")
-                            </th>
-                            <th style="text-align:center;">
-                                @Html.DisplayName("Recurso")
-                            </th>
-                            <th style="text-align:center;">
-                                @Html.DisplayName("Rol")
-                            </th>
-                            <th style="text-align:center;">
-                                @Html.DisplayName("Rango")
-                            </th>
-                            <th style="text-align:center;">
-                                @Html.DisplayName("Tiempo")
-                            </th>
-                            <th style="text-align:center;"></th>
-                        </tr>
-                        @if (Model != null)
-                        {
-                            foreach (var tarea in Model.TareasAsignadas)
-                            {
-                                Html.RenderPartial("_Tareas", tarea);
-                            }
-                        }
-                    </table>*@
                 <ul class="list-unstyled" id="tareasList">
                     @foreach (var tarea in Model.TareasAsignadas)
                     {
