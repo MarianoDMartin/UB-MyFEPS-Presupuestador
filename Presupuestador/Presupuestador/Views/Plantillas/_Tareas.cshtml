@@ -1,0 +1,7 @@
+﻿@model Presupuestador.Models.Tarea
+@using (Html.BeginCollectionItem("TareasAsignadas"))
+{
+    <li id="li-@Model.id" class=""><label>Tarea: </label>@Model.titulo <span style="cursor:pointer;" class="glyphicon glyphicon-remove" data-tooltip="tooltip" data-placement="bottom" title="Remover" onclick="RemoverTarea(@Model.id)"></span></li>
+    @Html.HiddenFor(x => x.id, new { id = "hdn-id-" + Model.id })
+    @Html.HiddenFor(x => x.titulo, new { id = "hdn-titulo-" + Model.titulo })
+}

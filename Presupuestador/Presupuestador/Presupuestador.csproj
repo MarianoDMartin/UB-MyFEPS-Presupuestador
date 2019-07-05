@@ -141,6 +141,7 @@
     <Compile Include="Controllers\CategoriasController.cs" />
     <Compile Include="Controllers\ContactosController.cs" />
     <Compile Include="Controllers\InicioController.cs" />
+    <Compile Include="Controllers\PlantillasController.cs" />
     <Compile Include="Controllers\PresupuestosController.cs" />
     <Compile Include="Controllers\ProyectosController.cs" />
     <Compile Include="Controllers\RecursosController.cs" />
@@ -208,6 +209,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\PresupuestoViewModel.cs" />
     <Compile Include="ViewModels\TareaViewModel.cs" />
+    <Compile Include="ViewModels\PlantillaViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-datepicker.css" />
@@ -296,6 +298,12 @@
     <Content Include="Views\Inicio\Index.cshtml" />
     <Content Include="Views\Presupuestos\_Tareas.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Collection.cshtml" />
+    <Content Include="Views\Plantillas\Create.cshtml" />
+    <Content Include="Views\Plantillas\Delete.cshtml" />
+    <Content Include="Views\Plantillas\Details.cshtml" />
+    <Content Include="Views\Plantillas\Edit.cshtml" />
+    <Content Include="Views\Plantillas\Index.cshtml" />
+    <Content Include="Views\Plantillas\_Tareas.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
