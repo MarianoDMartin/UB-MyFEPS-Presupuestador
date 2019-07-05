@@ -1,4 +1,4 @@
-﻿@model Presupuestador.ViewModels.Presupuesto
+﻿@model Presupuestador.ViewModels.PresupuestoViewModel
 
 @{
     ViewBag.Title = "Crear Presupuesto";
@@ -12,16 +12,12 @@
     @Html.AntiForgeryToken()
 
     <hr />
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item">
-            <a class="nav-link active" id="info-tab" data-toggle="tab" href="#info" role="tab" aria-controls="info" aria-selected="true">Info</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" id="tareas-tab" data-toggle="tab" href="#tareas" role="tab" aria-controls="tareas" aria-selected="false">Tareas</a>
-        </li>
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#info">Info</a></li>
+        <li><a data-toggle="tab" href="#tareas">Tareas</a></li>
     </ul>
-    <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade show active" id="info" role="tabpanel" aria-labelledby="info-tab">
+    <div class="tab-content">
+        <div class="tab-pane fade in active" id="info">
             <div class="form-row">
                 <div class="form-group col-sm-6">
                     @Html.LabelFor(model => model.descripcion, "Descripción", new { @class = "control-label" })
@@ -63,14 +59,20 @@
                     @Html.ValidationMessageFor(model => model.creador, "", new { @class = "text-danger" })
                 </div>
 
-                <div class="form-group col-sm-4">
+                <div class="form-group col-sm-2">
                     @Html.LabelFor(model => model.proyecto_id, "Proyectos", new { @class = "control-label" })
                     @Html.DropDownList("proyecto_id", null, htmlAttributes: new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.proyecto_id, "", new { @class = "text-danger" })
                 </div>
+
+                <div class="form-group col-sm-2">
+                    @Html.LabelFor(model => model.estado_id, "Estado", new { @class = "control-label" })
+                    @Html.DropDownList("estado_id", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.estado_id, "", new { @class = "text-danger" })
+                </div>
             </div>
         </div>
-        <div class="tab-pane fade" id="tareas" role="tabpanel" aria-labelledby="tareas-tab">
+        <div class="tab-pane fade" id="tareas">
             <div class="form-row">
                 <div class="form-group col-sm-4">
                     @Html.LabelFor(model => model.Tareas, "Tareas", new { @class = "control-label" })
@@ -85,7 +87,7 @@
                 </div>
 
                 <div class="form-group col-sm-2">
-                    @Html.LabelFor(model => model.valorHora, "Valor Hora", new { @class = "control-label" })
+                    @Html.LabelFor(model => model.valorHora, "Horas", new { @class = "control-label" })
                     @Html.EditorFor(model => model.valorHora, new { htmlAttributes = new { @class = "form-control" } })
                     @*@Html.ValidationMessageFor(model => model.valorHora, "", new { @class = "text-danger" })*@
                 </div>
@@ -133,8 +135,8 @@
         </div>
         <div class="form-row">
             <div class="form-group col-sm-12">
-                <input type="submit" value="Crear" class="btn btn-danger" />
                 @Html.ActionLink("Cancelar", "Index", routeValues: null, htmlAttributes: new { @class = "btn btn-default", @role = "button" })
+                <input type="submit" value="Crear" class="btn btn-danger" />
             </div>
         </div>
     </div>
@@ -147,7 +149,10 @@
 
 <script>
     $(document).ready(function () {
-        $('.datepicker').datepicker();
+        //$('.datepicker').datepicker();
+        $('.datepicker').datepicker({
+            format: 'mm/dd/yyyy'
+        });
     });
 
     function AgregarTarea() {

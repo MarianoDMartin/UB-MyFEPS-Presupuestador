@@ -11,7 +11,7 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.descripcion)
+            @Html.DisplayName("Descripción")
         </dt>
 
         <dd>
@@ -19,7 +19,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.ciclos_test)
+            @Html.DisplayName("Ciclos por test")
         </dt>
 
         <dd>
@@ -27,7 +27,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.tiempo_test)
+            @Html.DisplayName("Tiempo por test")
         </dt>
 
         <dd>
@@ -35,23 +35,23 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.fecha_creacion)
+            @Html.DisplayName("Fecha de Creación")
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.fecha_creacion)
+            @Convert.ToDateTime(Model.fecha_creacion).ToString("dd/MM/yyyy")
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.fecha_vencimiento)
+            @Html.DisplayName("Fecha de Vencimiento")
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.fecha_vencimiento)
+            @Convert.ToDateTime(Model.fecha_vencimiento).ToString("dd/MM/yyyy")
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.cargas_sociales)
+            @Html.DisplayName("Cargos sociales")
         </dt>
 
         <dd>
@@ -59,7 +59,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.markup)
+            @Html.DisplayName("Markup ")
         </dt>
 
         <dd>
@@ -67,7 +67,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.costo_base)
+            @Html.DisplayName("Costo Base")
         </dt>
 
         <dd>
@@ -75,7 +75,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.creador)
+            @Html.DisplayName("Creador ")
         </dt>
 
         <dd>
@@ -83,24 +83,16 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Presupuestos_Estados.descripcion)
+            @Html.DisplayName("Estado")
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.Presupuestos_Estados.descripcion)
         </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Proyecto.nombre)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Proyecto.nombre)
-        </dd>
-
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Volver", "Index", routeValues: null, htmlAttributes: new { @class = "btn btn-default", @role = "button" })
+    @Html.ActionLink("Editar", "Edit", routeValues: new { id = Model.id }, htmlAttributes: new { @class = "btn btn-danger", @role = "button" })
 </p>

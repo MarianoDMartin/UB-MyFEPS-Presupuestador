@@ -1,7 +1,7 @@
 ﻿@model Presupuestador.ViewModels.Tarea
 @using (Html.BeginCollectionItem("TareasAsignadas"))
 {
-    <li id="li-@Model.TareaId" class=""><label>Tarea: </label>@Model.Descripcion / <label>Recurso: </label>@Model.Recurso / <label>Rol: </label>@Model.Rol / <label>Rango: </label>@Model.Rango / <label>Tiempo: </label>@Model.Tiempo <span style="cursor:pointer;" class="glyphicon glyphicon-remove" data-tooltip="tooltip" data-placement="bottom" title="Remover" onclick="RemoverTarea(@Model.TareaId)"></span></li>
+    <li id="li-@Model.TareaId" class=""><label>Tarea: </label>@Model.Descripcion / <label>Recurso: </label>@Model.Recurso / <label>Horas: </label>@Model.Tiempo <span style="cursor:pointer;" class="glyphicon glyphicon-remove" data-tooltip="tooltip" data-placement="bottom" title="Remover" onclick="RemoverTarea(@Model.TareaId)"></span></li>
     @Html.HiddenFor(x => x.TareaId, new { id = "hdn-tareaid-" + Model.TareaId })
     @Html.HiddenFor(x => x.Descripcion, new { id = "hdn-anombre-" + Model.TareaId })
     @*@Html.HiddenFor(x => x.USUARIOID, new { id = "hdn-uid-" + Model.TareaId })*@
